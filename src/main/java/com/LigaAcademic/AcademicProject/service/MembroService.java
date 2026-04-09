@@ -16,21 +16,17 @@ public class MembroService {
     public void registrarMembro(Membro membronovo) {
 
         if (membronovo.getNome() == null || membronovo.getNome().trim().isEmpty()){
-            System.out.println("O nome não pode ser nulo");
-            return;
+            throw new IllegalArgumentException("Digite o nome do membro");
         }
         if (membronovo.getMatricula() == null || membronovo.getMatricula().length() < 11 || membronovo.getMatricula().length() > 11 || !membronovo.getMatricula().matches("[0-9]+")) {
-            System.out.println("O número de mátricula precisa ter 11 dígitos");
-            return;
+            throw new IllegalArgumentException("A matricula precisa ter 11 digitos. EX: 20222016003");
         }
 
         if (!membronovo.getEmail().contains("@") || membronovo.getEmail().trim().isEmpty()) {
-            System.out.println("Coloque um email válido");
-            return;
+            throw new IllegalArgumentException("O email não pode ser vazio.");
         }
         if (membronovo.getCargo() == null || membronovo.getCargo().trim().isEmpty()) {
-            System.out.println("Cargo do membro não pode ser vazio");
-            return;
+            throw new IllegalArgumentException("Adicione o cargo.");
         }
 
         membroRepository.save(membronovo);
@@ -38,8 +34,7 @@ public class MembroService {
 
     public void removerMembro(String matriculaRemove){
         if(matriculaRemove == null || matriculaRemove.trim().isEmpty()){
-            System.out.println("A matricula informada está em branco ou é inválida");
-            return;
+            throw new IllegalArgumentException("Matricula é inválida");
         }
 
             Membro membroEncontrado = membroRepository.findByMatricula(matriculaRemove);
@@ -48,7 +43,7 @@ public class MembroService {
             System.out.println("Membro encontrado");
             membroRepository.delete(membroEncontrado);
         }else{
-            System.out.println("Membro não econtrado");
+            throw new IllegalArgumentException("Membro não encontrado");
         }
 
     }
@@ -56,28 +51,23 @@ public class MembroService {
     public void atualizarMembro(String nome,String matricula, String email, String cargo){
 
         if (nome == null || nome.trim().isEmpty()) {
-            System.out.println("O nome não pode ser nulo");
-            return;
+            throw new IllegalArgumentException("Nome não pode ser vazio");
         }
         if (matricula == null || matricula.length() < 11 || matricula.length() > 11 || !matricula.matches("[0-9]+")) {
-            System.out.println("O número de mátricula precisa ter 11 dígitos");
-            return;
+            throw new IllegalArgumentException("Adicione o formato correto de matricula");
         }
 
         if (email == null || !email.contains("@") || email.trim().isEmpty()) {
-            System.out.println("Coloque um email válido");
-            return;
+            throw new IllegalArgumentException("Coloque um email válido");
         }
         if (cargo == null || cargo.trim().isEmpty()) {
-            System.out.println("Cargo do membro não pode ser vazio");
-            return;
+            throw new IllegalArgumentException("Cargo do membro não pode ser vazio");
         }
     }
 
     public void listarMembro(String matricula){
         if (matricula == null || matricula.length() < 11 || matricula.length() > 11 || !matricula.matches("[0-9]+")) {
-            System.out.println("O número de mátricula precisa ter 11 dígitos ou não existe");
-            return;
+            throw new IllegalArgumentException("O número de mátricula precisa ter 11 dígitos ou não existe");
         }
         Membro membroMatricula = membroRepository.findByMatricula(matricula);
     }
