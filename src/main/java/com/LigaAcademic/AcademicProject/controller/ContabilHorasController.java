@@ -19,6 +19,7 @@ public class ContabilHorasController {
     @Autowired
     private ContabilHorasService contabilHorasService;
 
+
     @PostMapping
     public String contabilizarHoras(@RequestBody ContabilHoras contabilHoras){
         contabilHorasService.registrarHoras(contabilHoras);
