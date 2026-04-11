@@ -4,6 +4,7 @@ package com.LigaAcademic.AcademicProject.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -28,8 +29,11 @@ public class ContabilHoras {
     @Column(name ="descatividade")
     private String descAtividade;
 
+
     @Column(name = "dataatividade")
     private LocalDate dataAtividade;
+
+    @Column(name = "participantes")
     private String participantes;
 
     public float getHoras() {
