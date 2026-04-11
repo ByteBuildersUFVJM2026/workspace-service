@@ -2,6 +2,7 @@ package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.model.ContabilHoras;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import com.LigaAcademic.AcademicProject.repository.ContabilHorasRepository;
 
@@ -27,12 +28,13 @@ public class ContabilHorasService {
             if (contabilHoras.getDescAtividade() == null || contabilHoras.getDescAtividade().trim().isEmpty()) {
                 throw new IllegalArgumentException("Adicione a descrição da atividade");
             }
-            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+            if(contabilHoras.getDataAtividade() == null){
+                throw new IllegalArgumentException("A data não pode ser nula");
+            }
             try {
                 contabilHorasRepository.save(contabilHoras);
             } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Erro de validação: A data" + contabilHoras.getDataAtividade() + "é inválida. Utilize estruitamente o formato: AAAA-MM-DD");
+                throw new IllegalArgumentException("Erro de validação: A data" + contabilHoras.getDataAtividade() + "é inválida. Utilize exatamente o formato: AAAA-MM-DD");
             }
     }
 
@@ -55,6 +57,7 @@ public class ContabilHorasService {
 
 
     }
+
 
 
 }

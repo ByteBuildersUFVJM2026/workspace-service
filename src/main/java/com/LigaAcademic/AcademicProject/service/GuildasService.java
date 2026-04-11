@@ -14,19 +14,17 @@ public class GuildasService {
 
     public void registrarGuilda(GuildasModel novaguilda){
        if( novaguilda.getNome_guilda() == null || novaguilda.getNome_guilda().trim().isEmpty()){
-           System.out.println("Adicione o nome da guilda");
-           return;
+           throw new IllegalArgumentException("Adicione o nome da guilda.");
        }
        if(novaguilda.getTutor_guildas() == null || novaguilda.getTutor_guildas().trim().isEmpty()){
-           System.out.println("Adicione o nome do tutor");
-           return;
+           throw new IllegalArgumentException("Adicione o tutor da guilda.");
        }
        guildasRepository.save(novaguilda);
     }
 
     public void removerGuilda(Long id){
         if(id == null || id == 0){
-            System.out.println("O id da matricula não pode ser nulo ou 0");
+            throw new IllegalArgumentException("Id não encontrado.");
         }
 
         GuildasModel guildaParaRemover = guildasRepository.getById(id);
@@ -34,7 +32,7 @@ public class GuildasService {
         if(guildaParaRemover != null){
             guildasRepository.delete(guildaParaRemover);
         }else{
-            System.out.println("Guilda com esse ID não encontrada");
+            throw new IllegalArgumentException("Guilda não encontrada");
         }
 
     }

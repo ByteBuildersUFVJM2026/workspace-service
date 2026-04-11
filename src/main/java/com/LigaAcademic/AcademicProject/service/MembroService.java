@@ -15,20 +15,6 @@ public class MembroService {
 
     public void registrarMembro(Membro membronovo) {
 
-        if (membronovo.getNome() == null || membronovo.getNome().trim().isEmpty()){
-            throw new IllegalArgumentException("Digite o nome do membro");
-        }
-        if (membronovo.getMatricula() == null || membronovo.getMatricula().length() < 11 || membronovo.getMatricula().length() > 11 || !membronovo.getMatricula().matches("[0-9]+")) {
-            throw new IllegalArgumentException("A matricula precisa ter 11 digitos. EX: 20222016003");
-        }
-
-        if (!membronovo.getEmail().contains("@") || membronovo.getEmail().trim().isEmpty()) {
-            throw new IllegalArgumentException("O email não pode ser vazio.");
-        }
-        if (membronovo.getCargo() == null || membronovo.getCargo().trim().isEmpty()) {
-            throw new IllegalArgumentException("Adicione o cargo.");
-        }
-
         membroRepository.save(membronovo);
     }
 
