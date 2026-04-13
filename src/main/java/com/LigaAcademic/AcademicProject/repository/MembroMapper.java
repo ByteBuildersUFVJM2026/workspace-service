@@ -12,5 +12,7 @@ public interface MembroMapper {
 
     MembroResponseDTO paraDTO(Membro membro);
 
+    MembroResponseDTO paraResponseDTO(Membro membro);
+
 
 }

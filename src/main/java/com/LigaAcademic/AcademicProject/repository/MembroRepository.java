@@ -4,10 +4,12 @@ import com.LigaAcademic.AcademicProject.model.Membro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MembroRepository extends JpaRepository<Membro,Long> {
 
-    Membro findByMatricula(String matricula);
+    Optional <Membro> findByMatricula(String matricula);
 
 }
 
