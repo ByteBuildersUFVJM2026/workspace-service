@@ -2,8 +2,10 @@ package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.model.Membro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.LigaAcademic.AcademicProject.repository.MembroRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -13,9 +15,9 @@ public class MembroService {
     @Autowired
     private MembroRepository membroRepository;
 
-    public void registrarMembro(Membro membronovo) {
+    public Membro registrarMembro(Membro membronovo) {
 
-        membroRepository.save(membronovo);
+        return membroRepository.save(membronovo);
     }
 
     public void removerMembro(String matriculaRemove){
@@ -23,7 +25,10 @@ public class MembroService {
             throw new IllegalArgumentException("Matricula é inválida");
         }
 
-            Membro membroEncontrado = membroRepository.findByMatricula(matriculaRemove);
+            Membro membroEncontrado = membroRepository.findByMatricula(matriculaRemove)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,"Não é possível deletar: Membro com matricula" + matriculaRemove + " não existe"
+                    ));
 
         if(membroEncontrado != null){
             System.out.println("Membro encontrado");
@@ -34,28 +39,28 @@ public class MembroService {
 
     }
 
-    public void atualizarMembro(String nome,String matricula, String email, String cargo){
+    public Membro atualizarMembro(String matricula, Membro membroAtualizado){
 
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio");
-        }
-        if (matricula == null || matricula.length() < 11 || matricula.length() > 11 || !matricula.matches("[0-9]+")) {
-            throw new IllegalArgumentException("Adicione o formato correto de matricula");
-        }
+        Membro membroExistente = membroRepository.findByMatricula(matricula)
 
-        if (email == null || !email.contains("@") || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Coloque um email válido");
-        }
-        if (cargo == null || cargo.trim().isEmpty()) {
-            throw new IllegalArgumentException("Cargo do membro não pode ser vazio");
-        }
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,"Erro ao atualizar> Matrícula " + matricula + "não encontrada"
+        ));
+
+        membroExistente.setNome(membroAtualizado.getNome());
+        membroExistente.setEmail(membroAtualizado.getEmail());
+
+        return membroRepository.save(membroExistente);
+
+
     }
 
-    public void listarMembro(String matricula){
-        if (matricula == null || matricula.length() < 11 || matricula.length() > 11 || !matricula.matches("[0-9]+")) {
-            throw new IllegalArgumentException("O número de mátricula precisa ter 11 dígitos ou não existe");
-        }
-        Membro membroMatricula = membroRepository.findByMatricula(matricula);
+    public Membro buscarMembro(String matricula){
+
+        return membroRepository.findByMatricula(matricula)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,"Matricula não encontrada!"
+                ));
     }
 
     public List<Membro> listaTodos(){
