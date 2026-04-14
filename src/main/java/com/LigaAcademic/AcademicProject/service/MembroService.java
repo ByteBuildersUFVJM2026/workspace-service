@@ -1,5 +1,7 @@
 package com.LigaAcademic.AcademicProject.service;
 
+import com.LigaAcademic.AcademicProject.User.User;
+import com.LigaAcademic.AcademicProject.User.UsersRoles;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,11 +11,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static com.LigaAcademic.AcademicProject.User.UsersRoles.ROLE_USER;
+
 @Service
 public class MembroService {
 
-    @Autowired
+
     private MembroRepository membroRepository;
+
+    public MembroService(MembroRepository membroRepository) {
+        this.membroRepository = membroRepository;
+    }
 
     public Membro registrarMembro(Membro membronovo) {
 
