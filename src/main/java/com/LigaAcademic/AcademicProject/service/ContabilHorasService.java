@@ -17,25 +17,9 @@ public class ContabilHorasService {
     @Autowired
     private ContabilHorasRepository contabilHorasRepository;
 
-    public void registrarHoras(ContabilHoras contabilHoras){
+    public ContabilHoras registrarHoras(ContabilHoras contabilHoras){
 
-            if (contabilHoras.getParticipantes() == null || contabilHoras.getParticipantes().trim().isEmpty()) {
-                throw new IllegalArgumentException("Adicione ao menos 1 participante");
-            }
-            if (contabilHoras.getTipoAtividade() == null || contabilHoras.getTipoAtividade().trim().isEmpty()) {
-                throw new IllegalArgumentException("Adicione o tipo de atividade");
-            }
-            if (contabilHoras.getDescAtividade() == null || contabilHoras.getDescAtividade().trim().isEmpty()) {
-                throw new IllegalArgumentException("Adicione a descrição da atividade");
-            }
-            if(contabilHoras.getDataAtividade() == null){
-                throw new IllegalArgumentException("A data não pode ser nula");
-            }
-            try {
-                contabilHorasRepository.save(contabilHoras);
-            } catch (DateTimeException e) {
-                throw new IllegalArgumentException("Erro de validação: A data" + contabilHoras.getDataAtividade() + "é inválida. Utilize exatamente o formato: AAAA-MM-DD");
-            }
+        return contabilHorasRepository.save(contabilHoras);
     }
 
     public List<ContabilHoras> listarTodos(){
