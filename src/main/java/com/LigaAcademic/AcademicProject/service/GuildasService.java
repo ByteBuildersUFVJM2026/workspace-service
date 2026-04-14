@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GuildasService {
 
-    @Autowired
+
     private GuildasRepository guildasRepository;
 
+    public GuildasService(GuildasRepository guildasRepository) {
+        this.guildasRepository = guildasRepository;
+    }
 
     public void registrarGuilda(GuildasModel novaguilda){
        if( novaguilda.getNome_guilda() == null || novaguilda.getNome_guilda().trim().isEmpty()){

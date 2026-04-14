@@ -4,8 +4,7 @@ package com.LigaAcademic.AcademicProject.controller;
 import com.LigaAcademic.AcademicProject.User.MembroRequestDTO;
 import com.LigaAcademic.AcademicProject.User.MembroResponseDTO;
 import com.LigaAcademic.AcademicProject.model.Membro;
-import com.LigaAcademic.AcademicProject.repository.MembroMapper;
-import org.apache.coyote.Response;
+import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,15 @@ import java.util.List;
 @RequestMapping("/membros")
 public class MembroController {
 
-    @Autowired
-    private MembroMapper mapper;
 
-    @Autowired
+    private MembroMapper mapper;
     private MembroService membroService;
+
+
+    public MembroController(MembroMapper mapper, MembroService membroService) {
+        this.mapper = mapper;
+        this.membroService = membroService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Membro>>listarTodos(){

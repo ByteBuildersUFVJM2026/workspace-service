@@ -9,8 +9,9 @@ public record MembroRequestDTO(
         @NotBlank(message = "O nome não pode ser vazio.")
           String nome,
 
-        @NotBlank(message = "O cargo não pode ser vazio.")
-         String cargo,
+        @NotBlank
+        String cargo,
+
         @Pattern(regexp = "^[0-9]{11}$", message = "A matricula precisa ter exatamente 11 digitos. EX: 20222016003")
         @NotBlank(message = "A matricula não pode ser vazio.")
          String matricula,
