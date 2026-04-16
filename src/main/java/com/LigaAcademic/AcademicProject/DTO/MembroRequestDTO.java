@@ -1,0 +1,21 @@
+package com.LigaAcademic.AcademicProject.DTO;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
+public record MembroRequestDTO(
+        @NotBlank(message = "O nome não pode ser vazio.")
+          String nome,
+
+        @NotBlank
+        String cargo,
+
+        @Pattern(regexp = "^[0-9]{11}$", message = "A matricula precisa ter exatamente 11 digitos. EX: 20222016003")
+        @NotBlank(message = "A matricula não pode ser vazio.")
+         String matricula,
+
+        @Email(message = "Adicione um email valido.")
+        @NotBlank(message = "O email não pode ser vazio.")
+         String email) {
+}

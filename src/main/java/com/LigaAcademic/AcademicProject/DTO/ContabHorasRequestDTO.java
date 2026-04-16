@@ -1,7 +1,6 @@
-package com.LigaAcademic.AcademicProject.User;
+package com.LigaAcademic.AcademicProject.DTO;
 
 import jakarta.validation.constraints.NotBlank;
-import org.aspectj.weaver.ast.Not;
 
 import java.time.LocalDate;
 
