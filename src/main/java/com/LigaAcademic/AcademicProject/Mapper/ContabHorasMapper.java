@@ -1,8 +1,8 @@
 package com.LigaAcademic.AcademicProject.Mapper;
 
 
-import com.LigaAcademic.AcademicProject.User.ContabHorasRequestDTO;
-import com.LigaAcademic.AcademicProject.User.ContabHorasResponseDTO;
+import com.LigaAcademic.AcademicProject.DTO.ContabHorasRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.ContabHorasResponseDTO;
 import com.LigaAcademic.AcademicProject.model.ContabilHoras;
 import org.mapstruct.Mapper;
 

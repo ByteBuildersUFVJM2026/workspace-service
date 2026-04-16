@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class Membro {
     joinColumns = @JoinColumn(name = "membro_id"),
     inverseJoinColumns = @JoinColumn(name = "guilda_model_id")
     )
-    private List<GuildasModel> guildasModel;
+    private List<GuildasModel> guildasModel = new ArrayList<>();
 
 
 
@@ -67,14 +68,23 @@ public class Membro {
         this.id = id;
     }
 
+    public List<GuildasModel> getGuildasModel() {
+        return guildasModel;
+    }
+
+    public void setGuildasModel(List<GuildasModel> guildasModel) {
+        this.guildasModel = guildasModel;
+    }
+
     @Override
     public String toString() {
-        return "membros.Membro{" +
+        return "Membro{" +
                 "nome='" + nome + '\'' +
                 ", cargo='" + cargo + '\'' +
                 ", matricula='" + matricula + '\'' +
                 ", id=" + id +
                 ", email='" + email + '\'' +
+                ", guildasModel=" + guildasModel +
                 '}';
     }
 

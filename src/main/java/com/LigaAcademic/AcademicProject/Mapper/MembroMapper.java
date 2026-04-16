@@ -1,7 +1,7 @@
 package com.LigaAcademic.AcademicProject.Mapper;
 
-import com.LigaAcademic.AcademicProject.User.MembroRequestDTO;
-import com.LigaAcademic.AcademicProject.User.MembroResponseDTO;
+import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import org.mapstruct.Mapper;
 

@@ -1,11 +1,10 @@
 
 package com.LigaAcademic.AcademicProject.controller;
 
-import com.LigaAcademic.AcademicProject.User.MembroRequestDTO;
-import com.LigaAcademic.AcademicProject.User.MembroResponseDTO;
+import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

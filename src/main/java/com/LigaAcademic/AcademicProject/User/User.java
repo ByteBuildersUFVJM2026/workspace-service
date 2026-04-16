@@ -21,11 +21,16 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private UsersRoles role;
+
     private String email;
 
 

@@ -1,13 +1,11 @@
 package com.LigaAcademic.AcademicProject.controller;
 
 
-import com.LigaAcademic.AcademicProject.User.ContabHorasRequestDTO;
-import com.LigaAcademic.AcademicProject.User.ContabHorasResponseDTO;
+import com.LigaAcademic.AcademicProject.DTO.ContabHorasRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.ContabHorasResponseDTO;
 import com.LigaAcademic.AcademicProject.model.ContabilHoras;
 import com.LigaAcademic.AcademicProject.Mapper.ContabHorasMapper;
-import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.service.ContabilHorasService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

@@ -2,7 +2,9 @@ package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.User.User;
 import com.LigaAcademic.AcademicProject.User.UsersRoles;
+import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.model.Membro;
+import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,11 @@ public class MembroService {
 
 
     private MembroRepository membroRepository;
+    private GuildasRepository guildasRepository;
 
-    public MembroService(MembroRepository membroRepository) {
+    public MembroService(MembroRepository membroRepository, GuildasRepository guildasRepository) {
         this.membroRepository = membroRepository;
+        this.guildasRepository = guildasRepository;
     }
 
     public Membro registrarMembro(Membro membronovo) {
@@ -74,4 +78,20 @@ public class MembroService {
     public List<Membro> listaTodos(){
         return membroRepository.findAll();
     }
+
+    public void vincularMembroGuilda(String matricula, Long id){
+        Membro membro = membroRepository.findByMatricula(matricula)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,"Matricula não encontrada!"
+                ));
+        GuildasModel guildas = guildasRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,"Guilda com id" + id + "não encontrada."
+                ));
+        membro.getGuildasModel().add(guildas);
+
+        membroRepository.save(membro);
+    }
 }
+
+

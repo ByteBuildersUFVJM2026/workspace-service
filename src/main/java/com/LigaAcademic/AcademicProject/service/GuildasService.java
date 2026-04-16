@@ -15,14 +15,14 @@ public class GuildasService {
         this.guildasRepository = guildasRepository;
     }
 
-    public void registrarGuilda(GuildasModel novaguilda){
+    public GuildasModel registrarGuilda(GuildasModel novaguilda){
        if( novaguilda.getNome_guilda() == null || novaguilda.getNome_guilda().trim().isEmpty()){
            throw new IllegalArgumentException("Adicione o nome da guilda.");
        }
        if(novaguilda.getTutor_guildas() == null || novaguilda.getTutor_guildas().trim().isEmpty()){
            throw new IllegalArgumentException("Adicione o tutor da guilda.");
        }
-       guildasRepository.save(novaguilda);
+       return guildasRepository.save(novaguilda);
     }
 
     public void removerGuilda(Long id){
