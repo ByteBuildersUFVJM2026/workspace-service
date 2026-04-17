@@ -2,12 +2,12 @@ package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GuildasService {
-
 
     private GuildasRepository guildasRepository;
 
@@ -15,29 +15,40 @@ public class GuildasService {
         this.guildasRepository = guildasRepository;
     }
 
-    public GuildasModel registrarGuilda(GuildasModel novaguilda){
-       if( novaguilda.getNome_guilda() == null || novaguilda.getNome_guilda().trim().isEmpty()){
-           throw new IllegalArgumentException("Adicione o nome da guilda.");
-       }
-       if(novaguilda.getTutor_guildas() == null || novaguilda.getTutor_guildas().trim().isEmpty()){
-           throw new IllegalArgumentException("Adicione o tutor da guilda.");
-       }
-       return guildasRepository.save(novaguilda);
+    public List<GuildasModel> listaTodas() {
+
+        return guildasRepository.findAll();
     }
 
-    public void removerGuilda(Long id){
-        if(id == null || id == 0){
-            throw new IllegalArgumentException("Id não encontrado.");
-        }
+    public GuildasModel buscarGuilda(Long id) {
 
-        GuildasModel guildaParaRemover = guildasRepository.getById(id);
+        return guildasRepository.findById(id)
 
-        if(guildaParaRemover != null){
-            guildasRepository.delete(guildaParaRemover);
-        }else{
-            throw new IllegalArgumentException("Guilda não encontrada");
-        }
-
+                .orElseThrow(() -> new IllegalArgumentException("Guilda não encontrada para o id: " + id));
     }
 
+    public GuildasModel registrarGuilda(GuildasModel novaguilda) {
+
+
+        return guildasRepository.save(novaguilda);
+    }
+
+    public GuildasModel atualizarGuilda(Long id, GuildasModel dadosAtualizados) {
+        GuildasModel guildaExistente = buscarGuilda(id);
+
+        guildaExistente.setNome_guilda(dadosAtualizados.getNome_guilda());
+
+        guildaExistente.setTutor_guildas(dadosAtualizados.getTutor_guildas());
+
+        guildaExistente.setQuantidade_pessoas(dadosAtualizados.getQuantidade_pessoas());
+
+        return guildasRepository.save(guildaExistente);
+    }
+
+    public void removerGuilda(Long id) {
+
+        GuildasModel guildaParaRemover = buscarGuilda(id);
+
+        guildasRepository.delete(guildaParaRemover);
+    }
 }
