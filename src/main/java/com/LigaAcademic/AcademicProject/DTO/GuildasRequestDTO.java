@@ -1,6 +1,7 @@
 package com.LigaAcademic.AcademicProject.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 public record GuildasRequestDTO(
         @NotBlank
@@ -9,7 +10,7 @@ public record GuildasRequestDTO(
         @NotBlank
         String nome_guilda,
 
-        @NotBlank
+        @Positive
         int quantidade_pessoas
 
 ) {

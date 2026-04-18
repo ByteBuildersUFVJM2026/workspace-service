@@ -1,4 +1,3 @@
-
 package com.LigaAcademic.AcademicProject.controller;
 
 import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
@@ -28,8 +27,11 @@ public class MembroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Membro>>listarTodos(){
-        return ResponseEntity.ok(membroService.listaTodos());
+    public ResponseEntity<List<MembroResponseDTO>> listarTodos() {
+        List<MembroResponseDTO> membros = membroService.listaTodos().stream()
+                .map(mapper::paraResponseDTO)
+                .toList();
+        return ResponseEntity.ok(membros);
     }
 
 
@@ -69,6 +71,14 @@ public class MembroController {
     public ResponseEntity<Void> deletar(@PathVariable String matricula){
 
         membroService.removerMembro(matricula);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{matricula}/guildas/{idGuilda}")
+    public ResponseEntity<Void> vincularGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {
+
+        membroService.vincularMembroGuilda(matricula, idGuilda);
 
         return ResponseEntity.noContent().build();
     }
