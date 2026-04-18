@@ -17,7 +17,7 @@ public interface MembroRepository extends JpaRepository<Membro,Long> {
     List<Membro> buscarTodosComGuildas();
 
     @Query("SELECT m FROM Membro m LEFT JOIN FETCH m.guildasModel WHERE m.matricula = :matricula")
-    Optional<Membro> findByMatriculaComGuildas(String matricula);
+    Optional<Membro> findByMatriculaComTudo(String matricula);
 
 }
 
