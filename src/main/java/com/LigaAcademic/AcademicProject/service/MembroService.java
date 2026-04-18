@@ -1,5 +1,6 @@
 package com.LigaAcademic.AcademicProject.service;
 
+import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
 import com.LigaAcademic.AcademicProject.User.User;
 import com.LigaAcademic.AcademicProject.User.UsersRoles;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
@@ -51,20 +52,17 @@ public class MembroService {
 
     }
 
-    public Membro atualizarMembro(String matricula, Membro membroAtualizado){
+    public Membro atualizarMembro(String matricula, MembroUpdateRequestDTO dto) {
 
-        Membro membroExistente = membroRepository.findByMatricula(matricula)
-
+        Membro membroExistente = membroRepository.findByMatriculaComTudo(matricula)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,"Erro ao atualizar> Matrícula " + matricula + "não encontrada"
-        ));
+                        HttpStatus.NOT_FOUND, "Erro ao atualizar: Matrícula " + matricula + " não encontrada"
+                ));
 
-        membroExistente.setNome(membroAtualizado.getNome());
-        membroExistente.setEmail(membroAtualizado.getEmail());
+        membroExistente.setNome(dto.nome());
+        membroExistente.setEmail(dto.email());
 
         return membroRepository.save(membroExistente);
-
-
     }
 
     public Membro buscarMembro(String matricula){
