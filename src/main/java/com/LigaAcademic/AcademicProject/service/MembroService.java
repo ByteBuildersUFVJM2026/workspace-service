@@ -69,7 +69,7 @@ public class MembroService {
 
     public Membro buscarMembro(String matricula){
 
-        return membroRepository.findByMatriculaComGuildas(matricula)
+        return membroRepository.findByMatriculaComTudo(matricula)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,"Matricula não encontrada!"
                 ));
