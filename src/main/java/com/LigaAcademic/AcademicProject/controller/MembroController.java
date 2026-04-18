@@ -2,6 +2,7 @@ package com.LigaAcademic.AcademicProject.controller;
 
 import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
+import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
 import org.springframework.http.HttpStatus;
@@ -57,12 +58,12 @@ public class MembroController {
 
     }
 
-    @PutMapping("/{matricula}")
-    public ResponseEntity<MembroResponseDTO> atualizarMembro(@PathVariable String matricula, @Validated @RequestBody MembroRequestDTO membroRequestDTO){
+    @PatchMapping("/{matricula}")
+    public ResponseEntity<MembroResponseDTO> atualizarMembro(
+            @PathVariable String matricula,
+            @Validated @RequestBody MembroUpdateRequestDTO membroUpdateRequestDTO) {
 
-        Membro membroConvertido = mapper.paraEntidade(membroRequestDTO);
-
-        Membro membroSalvo = membroService.atualizarMembro(matricula, membroConvertido);
+        Membro membroSalvo = membroService.atualizarMembro(matricula, membroUpdateRequestDTO);
 
         return ResponseEntity.ok(mapper.paraResponseDTO(membroSalvo));
     }
