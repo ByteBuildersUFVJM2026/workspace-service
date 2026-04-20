@@ -1,20 +1,16 @@
 package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
-import com.LigaAcademic.AcademicProject.User.User;
-import com.LigaAcademic.AcademicProject.User.UsersRoles;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.LigaAcademic.AcademicProject.repository.MembroRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.LigaAcademic.AcademicProject.repository.MembroRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
-import static com.LigaAcademic.AcademicProject.User.UsersRoles.ROLE_USER;
 
 @Service
 public class MembroService {
@@ -77,6 +73,7 @@ public class MembroService {
         return membroRepository.buscarTodosComGuildas();
     }
 
+    @Transactional
     public void vincularMembroGuilda(String matricula, Long id){
         Membro membro = membroRepository.findByMatricula(matricula)
                 .orElseThrow(() -> new ResponseStatusException(
