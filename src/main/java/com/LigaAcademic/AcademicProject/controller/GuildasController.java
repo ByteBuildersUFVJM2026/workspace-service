@@ -1,5 +1,6 @@
 package com.LigaAcademic.AcademicProject.controller;
 
+import com.LigaAcademic.AcademicProject.DTO.GuildasQuantidadePessoasRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.GuildasRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.GuildasResponseDTO;
 import com.LigaAcademic.AcademicProject.Mapper.GuildasMapper;
@@ -61,6 +62,14 @@ public class GuildasController {
         GuildasModel guildaSalva = guildasService.atualizarGuilda(id, guildaConvertida);
 
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaSalva));
+    }
+
+    @PatchMapping("/{id}/quantidade-pessoas")
+    public ResponseEntity<GuildasResponseDTO> atualizarQuantidadePessoas(@PathVariable Long id, @Validated @RequestBody GuildasQuantidadePessoasRequestDTO dto) {
+
+        GuildasModel guildaAtualizada = guildasService.atualizarQuantidadePessoas(id, dto.quantidade_pessoas());
+
+        return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaAtualizada));
     }
 
     @DeleteMapping("/{id}")

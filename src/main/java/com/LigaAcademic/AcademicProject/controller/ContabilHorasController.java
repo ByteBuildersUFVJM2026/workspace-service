@@ -38,7 +38,7 @@ public class ContabilHorasController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.horasParaResponseDTO(horasSalvas));
     }
 
-    @GetMapping("/{participante}")
+    @GetMapping("/{matricula}")
     public ResponseEntity<List<ContabHorasResponseDTO>> listarAtividadesDoParticipante(@PathVariable String participante){
 
         List<ContabilHoras> listaEntidades = contabilHorasService.listarAtividadesParticipante(participante);
@@ -51,14 +51,18 @@ public class ContabilHorasController {
     }
 
     @GetMapping
-    public List<ContabilHoras> listarHoras(){
-        return contabilHorasService.listarTodos();
+    public ResponseEntity<List<ContabHorasResponseDTO>> listarHoras(){
+        List<ContabHorasResponseDTO> respostaDto = contabilHorasService.listarTodos().stream()
+                .map(mapper::horasParaResponseDTO)
+                .toList();
+
+        return ResponseEntity.ok(respostaDto);
     }
 
     @DeleteMapping("/{id}")
-    public String deletar(@PathVariable Long id){
+    public ResponseEntity<Void> deletar(@PathVariable Long id){
         contabilHorasService.apagarRegistro(id);
-        return "Membro deletado";
+        return ResponseEntity.noContent().build();
     }
 
 }

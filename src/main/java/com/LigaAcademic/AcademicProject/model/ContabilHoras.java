@@ -18,6 +18,7 @@ public class ContabilHoras {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private float horas;
 
     @Column(name = "tipoatividade")
@@ -35,6 +36,9 @@ public class ContabilHoras {
 
     @Column(name = "participantes")
     private String participantes;
+
+    @Column(name = "matricula")
+    private String matricula;
 
     public float getHoras() {
         return horas;
@@ -92,15 +96,25 @@ public class ContabilHoras {
         this.id = id;
     }
 
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
     @Override
     public String toString() {
         return "ContabilHoras{" +
-                "horas=" + horas +
+                "id=" + id +
+                ", horas=" + horas +
                 ", tipoAtividade='" + tipoAtividade + '\'' +
                 ", setorAtividade='" + setorAtividade + '\'' +
                 ", descAtividade='" + descAtividade + '\'' +
-                ", dataAtividade='" + dataAtividade + '\'' +
+                ", dataAtividade=" + dataAtividade +
                 ", participantes='" + participantes + '\'' +
+                ", matricula='" + matricula + '\'' +
                 '}';
     }
 }

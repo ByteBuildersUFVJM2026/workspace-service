@@ -38,9 +38,17 @@ public class GuildasService {
 
         guildaExistente.setNome_guilda(dadosAtualizados.getNome_guilda());
 
-        guildaExistente.setTutor_guildas(dadosAtualizados.getTutor_guildas());
+        guildaExistente.setTutor_guilda(dadosAtualizados.getTutor_guilda());
 
         guildaExistente.setQuantidade_pessoas(dadosAtualizados.getQuantidade_pessoas());
+
+        return guildasRepository.save(guildaExistente);
+    }
+
+    public GuildasModel atualizarQuantidadePessoas(Long id, int quantidadePessoas) {
+        GuildasModel guildaExistente = buscarGuilda(id);
+
+        guildaExistente.setQuantidade_pessoas(quantidadePessoas);
 
         return guildasRepository.save(guildaExistente);
     }

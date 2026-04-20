@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Positive;
 
 public record GuildasRequestDTO(
         @NotBlank
-        String tutor_guildas,
+        String tutor_guilda,
 
         @NotBlank
         String nome_guilda,
