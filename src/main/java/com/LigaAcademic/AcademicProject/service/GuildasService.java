@@ -16,33 +16,28 @@ public class GuildasService {
     }
 
     public List<GuildasModel> listaTodas() {
-
-        return guildasRepository.findAll();
+        return guildasRepository.findAllComMembros();
     }
 
     public GuildasModel buscarGuilda(Long id) {
-
-        return guildasRepository.findById(id)
-
+        return guildasRepository.findByIdComMembros(id)
                 .orElseThrow(() -> new IllegalArgumentException("Guilda não encontrada para o id: " + id));
     }
 
-    public GuildasModel registrarGuilda(GuildasModel novaguilda) {
-
-
-        return guildasRepository.save(novaguilda);
+    public GuildasModel registrarGuilda(GuildasModel novaGuilda) {
+        GuildasModel salva = guildasRepository.save(novaGuilda);
+        return buscarGuilda(salva.getId());
     }
 
     public GuildasModel atualizarGuilda(Long id, GuildasModel dadosAtualizados) {
         GuildasModel guildaExistente = buscarGuilda(id);
 
         guildaExistente.setNome_guilda(dadosAtualizados.getNome_guilda());
-
         guildaExistente.setTutor_guilda(dadosAtualizados.getTutor_guilda());
-
         guildaExistente.setQuantidade_pessoas(dadosAtualizados.getQuantidade_pessoas());
 
-        return guildasRepository.save(guildaExistente);
+        guildasRepository.save(guildaExistente);
+        return buscarGuilda(id);
     }
 
     public GuildasModel atualizarQuantidadePessoas(Long id, int quantidadePessoas) {
@@ -50,13 +45,12 @@ public class GuildasService {
 
         guildaExistente.setQuantidade_pessoas(quantidadePessoas);
 
-        return guildasRepository.save(guildaExistente);
+        guildasRepository.save(guildaExistente);
+        return buscarGuilda(id);
     }
 
     public void removerGuilda(Long id) {
-
         GuildasModel guildaParaRemover = buscarGuilda(id);
-
         guildasRepository.delete(guildaParaRemover);
     }
 }
