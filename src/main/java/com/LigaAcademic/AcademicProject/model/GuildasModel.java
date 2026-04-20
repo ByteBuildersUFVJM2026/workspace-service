@@ -20,7 +20,7 @@ public class GuildasModel {
 
     private String nome_guilda;
 
-    private String tutor_guildas;
+    private String tutor_guilda;
 
     private int quantidade_pessoas;
 
@@ -43,12 +43,12 @@ public class GuildasModel {
         this.nome_guilda = nome_guilda;
     }
 
-    public String getTutor_guildas() {
-        return tutor_guildas;
+    public String getTutor_guilda() {
+        return tutor_guilda;
     }
 
-    public void setTutor_guildas(String tutor_guildas) {
-        this.tutor_guildas = tutor_guildas;
+    public void setTutor_guilda(String tutor_guilda) {
+        this.tutor_guilda = tutor_guilda;
     }
 
     public int getQuantidade_pessoas() {
@@ -64,7 +64,7 @@ public class GuildasModel {
         return "GuildasModel{" +
                 "id=" + id +
                 ", nome_guilda='" + nome_guilda + '\'' +
-                ", tutor_guildas='" + tutor_guildas + '\'' +
+                ", tutor_guilda='" + tutor_guilda + '\'' +
                 ", quantidade_pessoas=" + quantidade_pessoas +
                 '}';
     }

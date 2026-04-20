@@ -1,0 +1,1 @@
+ALTER TABLE guildas DROP COLUMN IF EXISTS tutor_guildas;
