@@ -76,11 +76,14 @@ public class MembroController {
         return ResponseEntity.noContent().build();
     }
 
+
+    //Duas pessoas na mesma guilda!!
     @PostMapping("/{matricula}/guildas/{idGuilda}")
     public ResponseEntity<Void> vincularGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {
 
         membroService.vincularMembroGuilda(matricula, idGuilda);
 
         return ResponseEntity.noContent().build();
+
     }
 }
