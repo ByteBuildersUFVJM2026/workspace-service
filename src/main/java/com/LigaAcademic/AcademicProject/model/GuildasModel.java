@@ -51,6 +51,14 @@ public class GuildasModel {
         this.tutor_guilda = tutor_guilda;
     }
 
+    public List<Membro> getMembro() {
+        return membro;
+    }
+
+    public void setMembro(List<Membro> membro) {
+        this.membro = membro;
+    }
+
     public int getQuantidade_pessoas() {
         return quantidade_pessoas;
     }

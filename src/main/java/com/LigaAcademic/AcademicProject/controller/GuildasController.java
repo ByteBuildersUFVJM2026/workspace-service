@@ -36,9 +36,7 @@ public class GuildasController {
 
     @PostMapping
     public ResponseEntity<GuildasResponseDTO> registroDeGuilda(@RequestBody @Validated GuildasRequestDTO guildasRequestDTO) {
-
         GuildasModel novaGuilda = guildasMapper.guildaParaEntidade(guildasRequestDTO);
-
         GuildasModel salvarNovaGuilda = guildasService.registrarGuilda(novaGuilda);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(guildasMapper.guildaParaResponseDTO(salvarNovaGuilda));
@@ -46,19 +44,14 @@ public class GuildasController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GuildasResponseDTO> buscar(@PathVariable Long id) {
-
         GuildasModel guildaEncontrada = guildasService.buscarGuilda(id);
 
-        GuildasResponseDTO respostaDTO = guildasMapper.guildaParaResponseDTO(guildaEncontrada);
-
-        return ResponseEntity.ok(respostaDTO);
+        return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaEncontrada));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GuildasResponseDTO> atualizarGuilda(@PathVariable Long id, @Validated @RequestBody GuildasRequestDTO guildasRequestDTO) {
-
         GuildasModel guildaConvertida = guildasMapper.guildaParaEntidade(guildasRequestDTO);
-
         GuildasModel guildaSalva = guildasService.atualizarGuilda(id, guildaConvertida);
 
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaSalva));
@@ -66,7 +59,6 @@ public class GuildasController {
 
     @PatchMapping("/{id}/quantidade-pessoas")
     public ResponseEntity<GuildasResponseDTO> atualizarQuantidadePessoas(@PathVariable Long id, @Validated @RequestBody GuildasQuantidadePessoasRequestDTO dto) {
-
         GuildasModel guildaAtualizada = guildasService.atualizarQuantidadePessoas(id, dto.quantidade_pessoas());
 
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaAtualizada));
@@ -74,7 +66,6 @@ public class GuildasController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-
         guildasService.removerGuilda(id);
 
         return ResponseEntity.noContent().build();
