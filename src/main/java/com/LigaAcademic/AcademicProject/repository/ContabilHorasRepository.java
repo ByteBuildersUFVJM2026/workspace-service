@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ContabilHorasRepository extends JpaRepository<ContabilHoras,Long> {
 
-    List<ContabilHoras> findByParticipantes(String participante);
+    List<ContabilHoras> findByMatricula(String matricula);
 
 }
