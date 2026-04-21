@@ -1,16 +1,10 @@
 package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.model.ContabilHoras;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import com.LigaAcademic.AcademicProject.repository.ContabilHorasRepository;
-import org.springframework.web.server.ResponseStatusException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -28,18 +22,15 @@ public class ContabilHorasService {
         return contabilHorasRepository.save(contabilHoras);
     }
 
-    public List<ContabilHoras> listarAtividadesParticipante(String matricula){
-
-        if(matricula == null || matricula.trim().isEmpty()){
+    public List<ContabilHoras> listarAtividadesParticipante(String matricula) {
+        if (matricula == null || matricula.trim().isEmpty()) {
             throw new IllegalArgumentException("Matrícula inválida");
         }
 
         List<ContabilHoras> listaDeAtividades = contabilHorasRepository.findByMatricula(matricula);
 
-        if(listaDeAtividades.isEmpty()){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Nenhuma atividade encontrada para a matrícula " + matricula
-            );
+        if (listaDeAtividades.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma atividade encontrada para a matrícula " + matricula);
         }
 
         return listaDeAtividades;
@@ -49,20 +40,13 @@ public class ContabilHorasService {
         return contabilHorasRepository.findAll();
     }
 
-    public void apagarRegistro(Long idParaRemover){
-        if(idParaRemover == null){
-            throw new IllegalArgumentException("O id não pode ser vazio.");
-        }
+    public void apagarRegistro(Long idParaRemover) {
+        ContabilHoras registro = contabilHorasRepository.findById(idParaRemover)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Registro com id " + idParaRemover + " não encontrado"
+                ));
 
-        ContabilHoras IdEncontrado = contabilHorasRepository.findById(idParaRemover).orElseThrow(() -> new RuntimeException("Não encontrado"));
-
-        if(IdEncontrado != null){
-            contabilHorasRepository.delete(IdEncontrado);
-        }else{
-            throw new IllegalArgumentException("Contabilização com esse ID não encontrada");
-        }
-
-
+        contabilHorasRepository.delete(registro);
     }
 
 

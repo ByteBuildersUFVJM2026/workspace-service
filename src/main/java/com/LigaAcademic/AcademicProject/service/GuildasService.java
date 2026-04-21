@@ -2,6 +2,7 @@ package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class GuildasService {
 
     public GuildasModel buscarGuilda(Long id) {
         return guildasRepository.findByIdComMembros(id)
-                .orElseThrow(() -> new IllegalArgumentException("Guilda não encontrada para o id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Guilda não encontrada para o id: " + id));
     }
 
     public GuildasModel registrarGuilda(GuildasModel novaGuilda) {
