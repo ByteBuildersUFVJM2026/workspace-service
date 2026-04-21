@@ -1,13 +1,13 @@
 package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
+import com.LigaAcademic.AcademicProject.Exceptions.ConflictException;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
 import com.LigaAcademic.AcademicProject.repository.MembroRepository;
-import org.springframework.http.HttpStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,30 +28,24 @@ public class MembroService {
         return membroRepository.save(membronovo);
     }
 
-    public void removerMembro(String matriculaRemove){
-        if(matriculaRemove == null || matriculaRemove.trim().isEmpty()){
-            throw new IllegalArgumentException("Matricula é inválida");
+    public void removerMembro(String matriculaRemove) {
+        if (matriculaRemove == null || matriculaRemove.trim().isEmpty()) {
+            throw new IllegalArgumentException("Matrícula é inválida");
         }
 
-            Membro membroEncontrado = membroRepository.findByMatricula(matriculaRemove)
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,"Não é possível deletar: Membro com matricula" + matriculaRemove + " não existe"
-                    ));
+        Membro membroEncontrado = membroRepository.findByMatricula(matriculaRemove)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Não é possível deletar: membro com matrícula " + matriculaRemove + " não existe"
+                ));
 
-        if(membroEncontrado != null){
-            System.out.println("Membro encontrado");
-            membroRepository.delete(membroEncontrado);
-        }else{
-            throw new IllegalArgumentException("Membro não encontrado");
-        }
-
+        membroRepository.delete(membroEncontrado);
     }
 
     public Membro atualizarMembro(String matricula, MembroUpdateRequestDTO dto) {
 
         Membro membroExistente = membroRepository.findByMatriculaComTudo(matricula)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Erro ao atualizar: Matrícula " + matricula + " não encontrada"
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Erro ao atualizar: matrícula " + matricula + " não encontrada"
                 ));
 
         membroExistente.setNome(dto.nome());
@@ -63,9 +57,7 @@ public class MembroService {
     public Membro buscarMembro(String matricula){
 
         return membroRepository.findByMatriculaComTudo(matricula)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,"Matricula não encontrada!"
-                ));
+                .orElseThrow(() -> new EntityNotFoundException("Membro não encontrado para a matrícula " + matricula));
     }
 
     public List<Membro> listaTodos(){
@@ -74,19 +66,19 @@ public class MembroService {
 
     public void vincularMembroGuilda(String matricula, Long id) {
         Membro membro = membroRepository.findByMatriculaComTudo(matricula)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Matricula não encontrada!"
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Membro com matrícula " + matricula + " não encontrado"
                 ));
         GuildasModel guildas = guildasRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Guilda com id " + id + " não encontrada."
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Guilda com id " + id + " não encontrada"
                 ));
 
         boolean jaVinculado = membro.getGuildasModel().stream()
                 .anyMatch(g -> g.getId().equals(id));
         if (jaVinculado) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT, "Membro " + matricula + " já pertence à guilda " + id
+            throw new ConflictException(
+                    "Membro " + matricula + " já pertence à guilda " + id
             );
         }
 
@@ -95,15 +87,14 @@ public class MembroService {
     }
 
     public void desvincularMembroGuilda(String matricula, Long id) {
+
         Membro membro = membroRepository.findByMatriculaComTudo(matricula)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Matricula não encontrada!"
-                ));
+                .orElseThrow(() -> new EntityNotFoundException("Membro não encontrado"));
 
         boolean removido = membro.getGuildasModel().removeIf(g -> g.getId().equals(id));
         if (!removido) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Membro " + matricula + " não pertence à guilda " + id
+            throw new EntityNotFoundException(
+                    "Membro " + matricula + " não pertence à guilda " + id
             );
         }
 
