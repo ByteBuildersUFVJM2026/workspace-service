@@ -77,7 +77,7 @@ public class MembroController {
     }
 
 
-    //Duas pessoas na mesma guilda!!
+
     @PostMapping("/{matricula}/guildas/{idGuilda}")
     public ResponseEntity<Void> vincularGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {
 
@@ -85,5 +85,11 @@ public class MembroController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    @DeleteMapping("/{matricula}/guilda/{idGuilda}")
+    public ResponseEntity<Void> desvincularMembroGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {
+        membroService.desvincularMembroGuilda(matricula, idGuilda);
+        return ResponseEntity.noContent().build();
     }
 }

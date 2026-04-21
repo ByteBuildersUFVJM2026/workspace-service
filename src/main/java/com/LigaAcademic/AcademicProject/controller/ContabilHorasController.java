@@ -39,9 +39,9 @@ public class ContabilHorasController {
     }
 
     @GetMapping("/{matricula}")
-    public ResponseEntity<List<ContabHorasResponseDTO>> listarAtividadesDoParticipante(@PathVariable String participante){
+    public ResponseEntity<List<ContabHorasResponseDTO>> listarAtividadesDoParticipante(@PathVariable String matricula){
 
-        List<ContabilHoras> listaEntidades = contabilHorasService.listarAtividadesParticipante(participante);
+        List<ContabilHoras> listaEntidades = contabilHorasService.listarAtividadesParticipante(matricula);
 
         List<ContabHorasResponseDTO> respostaDto = listaEntidades.stream()
                 .map(entidade -> mapper.horasParaResponseDTO(entidade))

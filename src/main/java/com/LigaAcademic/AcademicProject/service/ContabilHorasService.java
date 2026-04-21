@@ -28,21 +28,21 @@ public class ContabilHorasService {
         return contabilHorasRepository.save(contabilHoras);
     }
 
-    public List<ContabilHoras> listarAtividadesParticipante(String nomeParticipante){
+    public List<ContabilHoras> listarAtividadesParticipante(String matricula){
 
-        if(nomeParticipante == null || nomeParticipante.trim().isEmpty()){
-
-            throw new IllegalArgumentException("Nome do participante vazio");
+        if(matricula == null || matricula.trim().isEmpty()){
+            throw new IllegalArgumentException("Matrícula inválida");
         }
 
-        List<ContabilHoras> listaDeAtividades = contabilHorasRepository.findByParticipantes(nomeParticipante);
+        List<ContabilHoras> listaDeAtividades = contabilHorasRepository.findByMatricula(matricula);
 
         if(listaDeAtividades.isEmpty()){
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,"Lista de atividades do participante " + nomeParticipante + "está vazia."
+                    HttpStatus.NOT_FOUND, "Nenhuma atividade encontrada para a matrícula " + matricula
             );
         }
-            return listaDeAtividades;
+
+        return listaDeAtividades;
     }
 
     public List<ContabilHoras> listarTodos(){
