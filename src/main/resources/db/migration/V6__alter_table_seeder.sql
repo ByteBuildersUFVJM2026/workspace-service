@@ -1,0 +1,1 @@
+DELETE FROM tb_users WHERE id = '58aa5513-b9da-4344-aff1-ead8868441fd';

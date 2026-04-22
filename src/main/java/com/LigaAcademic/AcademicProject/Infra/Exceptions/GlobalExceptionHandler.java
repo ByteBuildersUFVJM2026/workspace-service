@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Exceptions;
+package com.LigaAcademic.AcademicProject.Infra.Exceptions;
 
 
 import jakarta.persistence.EntityNotFoundException;
