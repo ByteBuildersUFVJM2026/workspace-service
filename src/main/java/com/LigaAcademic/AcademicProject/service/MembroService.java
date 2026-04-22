@@ -1,7 +1,7 @@
 package com.LigaAcademic.AcademicProject.service;
 
 import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
-import com.LigaAcademic.AcademicProject.Exceptions.ConflictException;
+import com.LigaAcademic.AcademicProject.Infra.Exceptions.ConflictException;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
