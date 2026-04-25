@@ -5,6 +5,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,6 +15,19 @@ import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler({BadCredentialsException.class, InternalAuthenticationServiceException.class})
+    public ResponseEntity<StandardErrorDTO> handlerAuthenticationException(RuntimeException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        StandardErrorDTO erro = new StandardErrorDTO(
+                Instant.now(),
+                status.value(),
+                "Não autorizado",
+                "Email ou senha inválidos",
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(erro);
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<StandardErrorDTO> handlerEntityNotFoundException(EntityNotFoundException e, HttpServletRequest request) {
