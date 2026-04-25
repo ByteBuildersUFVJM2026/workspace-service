@@ -1,6 +1,7 @@
 package com.LigaAcademic.AcademicProject.User;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,6 +52,14 @@ public class User implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public UsersRoles getRole() {
+        return role;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     @Override
