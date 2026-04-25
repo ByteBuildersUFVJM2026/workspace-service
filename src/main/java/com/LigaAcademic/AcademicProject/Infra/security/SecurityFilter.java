@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
+    private static final Logger log = LoggerFactory.getLogger(SecurityFilter.class);
 
     private TokenService tokenService;
     private UsersRepository usersRepository;
@@ -28,21 +31,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        System.out.println(">>>>TOKEN RECEBIDO <<<<" + token);
         if(token != null){
-
             var email = tokenService.validateToken(token);
-            System.out.println(">>>>EMAIL EXTRAÍDO" + email);
-
-            if(email !=null) {
-                System.out.printf("email extraído do token" + email);
+            if(email != null) {
                 UserDetails user = usersRepository.findByEmail(email);
-                System.out.println("USUÁRIO ENCONTRADO" + user);
-
                 if (user != null) {
                     var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println(">>>>>AUTHORITTIES" + user.getAuthorities());
+                    log.debug("Usuário autenticado via JWT: {}", email);
                 }
             }
         }

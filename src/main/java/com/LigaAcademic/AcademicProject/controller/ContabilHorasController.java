@@ -8,6 +8,7 @@ import com.LigaAcademic.AcademicProject.Mapper.ContabHorasMapper;
 import com.LigaAcademic.AcademicProject.service.ContabilHorasService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,7 @@ public class ContabilHorasController {
         return ResponseEntity.ok(respostaDto);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         contabilHorasService.apagarRegistro(id);

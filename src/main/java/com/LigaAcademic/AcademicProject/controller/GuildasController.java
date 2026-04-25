@@ -8,6 +8,7 @@ import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.service.GuildasService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class GuildasController {
         this.guildasService = guildasService;
     }
 
+
     @GetMapping
     public ResponseEntity<List<GuildasResponseDTO>> listarTodas() {
         List<GuildasResponseDTO> guildas = guildasService.listaTodas().stream()
@@ -34,6 +36,8 @@ public class GuildasController {
         return ResponseEntity.ok(guildas);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<GuildasResponseDTO> registroDeGuilda(@RequestBody @Validated GuildasRequestDTO guildasRequestDTO) {
         GuildasModel novaGuilda = guildasMapper.guildaParaEntidade(guildasRequestDTO);
@@ -49,6 +53,7 @@ public class GuildasController {
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaEncontrada));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<GuildasResponseDTO> atualizarGuilda(@PathVariable Long id, @Validated @RequestBody GuildasRequestDTO guildasRequestDTO) {
         GuildasModel guildaConvertida = guildasMapper.guildaParaEntidade(guildasRequestDTO);
@@ -57,6 +62,7 @@ public class GuildasController {
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaSalva));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/quantidade-pessoas")
     public ResponseEntity<GuildasResponseDTO> atualizarQuantidadePessoas(@PathVariable Long id, @Validated @RequestBody GuildasQuantidadePessoasRequestDTO dto) {
         GuildasModel guildaAtualizada = guildasService.atualizarQuantidadePessoas(id, dto.quantidade_pessoas());
@@ -64,6 +70,7 @@ public class GuildasController {
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaAtualizada));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         guildasService.removerGuilda(id);

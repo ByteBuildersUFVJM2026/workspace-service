@@ -7,6 +7,7 @@ import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.LigaAcademic.AcademicProject.service.MembroService;
@@ -36,6 +37,7 @@ public class MembroController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<MembroResponseDTO> adicionarMembro(@RequestBody @Validated MembroRequestDTO membroRequestDTO){
 
@@ -58,6 +60,7 @@ public class MembroController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{matricula}")
     public ResponseEntity<MembroResponseDTO> atualizarMembro(
             @PathVariable String matricula,
@@ -68,6 +71,7 @@ public class MembroController {
         return ResponseEntity.ok(mapper.paraResponseDTO(membroSalvo));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{matricula}")
     public ResponseEntity<Void> deletar(@PathVariable String matricula){
 
@@ -78,6 +82,7 @@ public class MembroController {
 
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{matricula}/guildas/{idGuilda}")
     public ResponseEntity<Void> vincularGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {
 
@@ -87,6 +92,7 @@ public class MembroController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{matricula}/guilda/{idGuilda}")
     public ResponseEntity<Void> desvincularMembroGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {
         membroService.desvincularMembroGuilda(matricula, idGuilda);
