@@ -29,6 +29,7 @@ public class ContabilHorasController {
         this.contabilHorasService = contabilHorasService;
     }
 
+    @PreAuthorize("hasRole('DIRETOR')")
     @PostMapping
     public ResponseEntity<ContabHorasResponseDTO> contabilizarHoras(@Validated @RequestBody ContabHorasRequestDTO contabHorasRequestDTO){
 
@@ -60,7 +61,7 @@ public class ContabilHorasController {
         return ResponseEntity.ok(respostaDto);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         contabilHorasService.apagarRegistro(id);

@@ -7,7 +7,6 @@ import com.LigaAcademic.AcademicProject.User.User;
 import com.LigaAcademic.AcademicProject.User.UsersRoles;
 import com.LigaAcademic.AcademicProject.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Transactional
     public CreateUserResponseDTO createUser(CreateUserRequestDTO dto) {
         if (usersRepository.existsByEmail(dto.email())) {
@@ -34,12 +33,21 @@ public class UserService {
         return new CreateUserResponseDTO(saved.getId(), saved.getEmail(), saved.getRole());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Transactional
     public void promoteToAdmin(String email) {
         if (!usersRepository.existsByEmail(email)) {
             throw new EntityNotFoundException("Usuário não encontrado.");
         }
         usersRepository.updateRoleByEmail(email, UsersRoles.ROLE_ADMIN);
+    }
+
+
+    @Transactional
+    public void deleteUser(String email) {
+        if (!usersRepository.existsByEmail(email)) {
+            throw new EntityNotFoundException("Usuário para remover não encontrado");
+        }
+        usersRepository.deleteByEmail(email);
     }
 }

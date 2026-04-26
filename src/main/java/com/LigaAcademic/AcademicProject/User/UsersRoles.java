@@ -7,6 +7,8 @@ public enum UsersRoles {
 
     ROLE_ADMIN("ROLE_ADMIN"),
 
+    ROLE_DIRETOR("ROLE_DIRETOR"),
+
     ROLE_USER("ROLE_USER");
 
     private String role;
