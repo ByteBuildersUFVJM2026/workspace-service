@@ -3,6 +3,7 @@ package com.LigaAcademic.AcademicProject.controller;
 import com.LigaAcademic.AcademicProject.DTO.GuildasQuantidadePessoasRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.GuildasRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.GuildasResponseDTO;
+import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
 import com.LigaAcademic.AcademicProject.Mapper.GuildasMapper;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.service.GuildasService;
@@ -37,7 +38,7 @@ public class GuildasController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('DIRETOR')")
     @PostMapping
     public ResponseEntity<GuildasResponseDTO> registroDeGuilda(@RequestBody @Validated GuildasRequestDTO guildasRequestDTO) {
         GuildasModel novaGuilda = guildasMapper.guildaParaEntidade(guildasRequestDTO);
@@ -53,7 +54,7 @@ public class GuildasController {
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaEncontrada));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('DIRETOR')")
     @PutMapping("/{id}")
     public ResponseEntity<GuildasResponseDTO> atualizarGuilda(@PathVariable Long id, @Validated @RequestBody GuildasRequestDTO guildasRequestDTO) {
         GuildasModel guildaConvertida = guildasMapper.guildaParaEntidade(guildasRequestDTO);
@@ -62,13 +63,14 @@ public class GuildasController {
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaSalva));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('DIRETOR')")
     @PatchMapping("/{id}/quantidade-pessoas")
     public ResponseEntity<GuildasResponseDTO> atualizarQuantidadePessoas(@PathVariable Long id, @Validated @RequestBody GuildasQuantidadePessoasRequestDTO dto) {
         GuildasModel guildaAtualizada = guildasService.atualizarQuantidadePessoas(id, dto.quantidade_pessoas());
 
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaAtualizada));
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")

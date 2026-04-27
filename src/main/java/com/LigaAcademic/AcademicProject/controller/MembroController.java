@@ -37,7 +37,7 @@ public class MembroController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('DIRETOR')")
     @PostMapping
     public ResponseEntity<MembroResponseDTO> adicionarMembro(@RequestBody @Validated MembroRequestDTO membroRequestDTO){
 
@@ -60,7 +60,7 @@ public class MembroController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('DIRETOR')")
     @PatchMapping("/{matricula}")
     public ResponseEntity<MembroResponseDTO> atualizarMembro(
             @PathVariable String matricula,

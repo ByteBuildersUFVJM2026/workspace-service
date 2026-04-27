@@ -61,7 +61,6 @@ public class User implements UserDetails {
     public UUID getId() {
         return id;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
