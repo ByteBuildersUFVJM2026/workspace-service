@@ -3,6 +3,7 @@ package com.LigaAcademic.AcademicProject.controller;
 
 import com.LigaAcademic.AcademicProject.DTO.ContabHorasRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.ContabHorasResponseDTO;
+import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
 import com.LigaAcademic.AcademicProject.model.ContabilHoras;
 import com.LigaAcademic.AcademicProject.Mapper.ContabHorasMapper;
 import com.LigaAcademic.AcademicProject.service.ContabilHorasService;
@@ -52,6 +53,7 @@ public class ContabilHorasController {
         return ResponseEntity.ok(respostaDto);
     }
 
+    @AuditarAcao(acao = "Testando o auditaracao")
     @GetMapping
     public ResponseEntity<List<ContabHorasResponseDTO>> listarHoras(){
         List<ContabHorasResponseDTO> respostaDto = contabilHorasService.listarTodos().stream()
