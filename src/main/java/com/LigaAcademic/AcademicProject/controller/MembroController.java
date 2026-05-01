@@ -3,6 +3,7 @@ package com.LigaAcademic.AcademicProject.controller;
 import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
 import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
+import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
 import org.springframework.http.HttpStatus;
@@ -71,6 +72,7 @@ public class MembroController {
         return ResponseEntity.ok(mapper.paraResponseDTO(membroSalvo));
     }
 
+    @AuditarAcao(acao = "Delete de membro da liga.")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{matricula}")
     public ResponseEntity<Void> deletar(@PathVariable String matricula){
@@ -92,6 +94,7 @@ public class MembroController {
 
     }
 
+    @AuditarAcao(acao = "Desvinculando membro da guilda.")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{matricula}/guilda/{idGuilda}")
     public ResponseEntity<Void> desvincularMembroGuilda(@PathVariable String matricula, @PathVariable Long idGuilda) {

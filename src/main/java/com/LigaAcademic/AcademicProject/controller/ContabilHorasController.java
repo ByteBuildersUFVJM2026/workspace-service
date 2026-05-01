@@ -53,7 +53,7 @@ public class ContabilHorasController {
         return ResponseEntity.ok(respostaDto);
     }
 
-    @AuditarAcao(acao = "Testando o auditaracao")
+
     @GetMapping
     public ResponseEntity<List<ContabHorasResponseDTO>> listarHoras(){
         List<ContabHorasResponseDTO> respostaDto = contabilHorasService.listarTodos().stream()
@@ -63,6 +63,7 @@ public class ContabilHorasController {
         return ResponseEntity.ok(respostaDto);
     }
 
+    @AuditarAcao(acao = "Delete de registro de horas.")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){

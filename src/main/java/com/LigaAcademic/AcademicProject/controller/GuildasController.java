@@ -63,6 +63,7 @@ public class GuildasController {
         return ResponseEntity.ok(guildasMapper.guildaParaResponseDTO(guildaSalva));
     }
 
+    @AuditarAcao(acao = "Atualização da quantidade de pessoas na guilda.")
     @PreAuthorize("hasRole('DIRETOR')")
     @PatchMapping("/{id}/quantidade-pessoas")
     public ResponseEntity<GuildasResponseDTO> atualizarQuantidadePessoas(@PathVariable Long id, @Validated @RequestBody GuildasQuantidadePessoasRequestDTO dto) {
@@ -72,6 +73,7 @@ public class GuildasController {
     }
 
 
+    @AuditarAcao(acao = "Delete de guilda.")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
