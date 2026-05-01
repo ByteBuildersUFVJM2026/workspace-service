@@ -1,5 +1,6 @@
 package com.LigaAcademic.AcademicProject.Infra.security;
 
+import com.LigaAcademic.AcademicProject.Infra.security.ratelimity.LoginRateLimitFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,10 +31,12 @@ import java.util.List;
 public class SecurityConfigurations {
 
 
-    private SecurityFilter securityFilter;
+    private final SecurityFilter securityFilter;
+    private final LoginRateLimitFilter loginRateLimitFilter;
 
-    public SecurityConfigurations(SecurityFilter securityFilter) {
+    public SecurityConfigurations(SecurityFilter securityFilter, LoginRateLimitFilter loginRateLimitFilter) {
         this.securityFilter = securityFilter;
+        this.loginRateLimitFilter = loginRateLimitFilter;
     }
 
     @Bean
@@ -54,7 +57,10 @@ public class SecurityConfigurations {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+
+                .addFilterBefore(loginRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

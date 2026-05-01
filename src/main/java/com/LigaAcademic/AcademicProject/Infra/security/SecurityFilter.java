@@ -20,8 +20,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityFilter.class);
 
+
     private TokenService tokenService;
     private UsersRepository usersRepository;
+
 
     public SecurityFilter(TokenService tokenService, UsersRepository usersRepository) {
         this.tokenService = tokenService;
