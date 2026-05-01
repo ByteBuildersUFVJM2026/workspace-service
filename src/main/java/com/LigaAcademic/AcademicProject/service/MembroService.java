@@ -23,9 +23,13 @@ public class MembroService {
         this.guildasRepository = guildasRepository;
     }
 
-    public Membro registrarMembro(Membro membronovo) {
+    public Membro registrarMembro(Membro membroNovo) {
 
-        return membroRepository.save(membronovo);
+        if(membroRepository.existsByMatricula(membroNovo.getMatricula())){
+            throw new ConflictException("Membro com a matricula registrada já existe");
+        }
+
+        return membroRepository.save(membroNovo);
     }
 
     public void removerMembro(String matriculaRemove) {
