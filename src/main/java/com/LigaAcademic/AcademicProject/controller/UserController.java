@@ -2,6 +2,7 @@ package com.LigaAcademic.AcademicProject.controller;
 
 import com.LigaAcademic.AcademicProject.DTO.CreateUserRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.CreateUserResponseDTO;
+import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
 import com.LigaAcademic.AcademicProject.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @AuditarAcao(acao = "Usuário foi criado.")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<CreateUserResponseDTO> criarUsuario(@RequestBody @Validated CreateUserRequestDTO dto) {
@@ -33,6 +35,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @AuditarAcao(acao = "Usuário foi deletado.")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable String email){
