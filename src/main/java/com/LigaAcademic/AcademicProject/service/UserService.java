@@ -3,10 +3,12 @@ package com.LigaAcademic.AcademicProject.service;
 import com.LigaAcademic.AcademicProject.DTO.CreateUserRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.CreateUserResponseDTO;
 import com.LigaAcademic.AcademicProject.Infra.Exceptions.ConflictException;
+import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
 import com.LigaAcademic.AcademicProject.User.User;
 import com.LigaAcademic.AcademicProject.User.UsersRoles;
 import com.LigaAcademic.AcademicProject.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +35,12 @@ public class UserService {
         return new CreateUserResponseDTO(saved.getId(), saved.getEmail(), saved.getRole());
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @AuditarAcao(acao = "Promoveu alguém para admin")
     @Transactional
     public void promoteToAdmin(String email) {
+
+
         if (!usersRepository.existsByEmail(email)) {
             throw new EntityNotFoundException("Usuário não encontrado.");
         }

@@ -35,3 +35,7 @@ build/
 ### Claude Code ###
 CLAUDE.md
 AGENTS.md
+
+### Documentação local (não sobe ao GitHub) ###
+docs/
+.env
