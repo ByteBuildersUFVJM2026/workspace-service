@@ -28,6 +28,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @AuditarAcao(acao = "Membro promovido para cargo admin")
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{email}/promote")
     public ResponseEntity<Void> promoteToAdmin(@PathVariable String email) {
