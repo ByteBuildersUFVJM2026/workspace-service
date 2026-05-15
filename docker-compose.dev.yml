@@ -1,0 +1,27 @@
+version: '3.8'
+
+# Ambiente de desenvolvimento local.
+# Postgres e Redis têm portas expostas ao host para acesso direto
+# via DBeaver, Redis Insight, etc.
+# A API roda fora do Docker (./mvnw spring-boot:run) apontando para localhost.
+
+services:
+  db-liga:
+    image: postgres:16-alpine
+    container_name: postgres-docker-liga
+    environment:
+      - POSTGRES_DB=ligadb
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./dados-do-banco:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: appbyteredis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped

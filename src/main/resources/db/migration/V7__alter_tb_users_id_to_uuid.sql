@@ -1,2 +1,0 @@
-ALTER TABLE tb_users
-    ALTER COLUMN id TYPE UUID USING id::UUID;
