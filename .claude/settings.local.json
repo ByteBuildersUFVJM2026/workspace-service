@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(docker exec postgres-docker-liga *)"
+      "PowerShell(docker exec postgres-docker-liga *)",
+      "PowerShell(docker compose *)",
+      "PowerShell(cmd /c \"dir C:\\\\Users\\\\Arthur\\\\Desktop\\\\AcademicProject\\\\src\\\\main\\\\resources\\\\db\\\\migration\\\\\")",
+      "PowerShell(cmd /c \"cd /d C:\\\\Users\\\\Arthur\\\\Desktop\\\\AcademicProject && mvnw.cmd spring-boot:run 2>&1\")",
+      "PowerShell(cmd /c \"C:\\\\Users\\\\Arthur\\\\Desktop\\\\AcademicProject\\\\mvnw.cmd spring-boot:run 2>&1\")",
+      "PowerShell(cmd /c \"java -version 2>&1\" ; cmd /c \"where java 2>&1\")",
+      "PowerShell(cmd /c \"dir /b C:\\\\Program Files\\\\Java\\\\ 2>&1\" ; cmd /c \"dir /b C:\\\\Program Files\\\\Eclipse Adoptium\\\\ 2>&1\" ; cmd /c \"dir /b C:\\\\Program Files\\\\Microsoft\\\\ 2>&1 | findstr /i java\")",
+      "PowerShell(cmd /c \"dir /b \"\"C:\\\\Program Files\\\\Java\\\\\"\" 2>&1\")",
+      "PowerShell(cmd /c \"dir /s /b \"\"C:\\\\Program Files\\\\\"\" 2>&1 | findstr /i \"\"java.exe\"\" | findstr /i \"\"21\\\\|temurin\\\\|corretto\\\\|graal\"\"\")",
+      "PowerShell(cmd /c \"dir /s /b \"\"C:\\\\Users\\\\Arthur\\\\\"\" 2>&1 | findstr /i \"\"jdk-21\\\\|jdk21\\\\|temurin-21\"\"\")",
+      "PowerShell(cmd /c \"dir C:\\\\Users\\\\Arthur\\\\Desktop\\\\AcademicProject\\\\target\\\\surefire-reports\\\\ 2>&1\")"
     ]
   }
 }
