@@ -1,9 +1,5 @@
 version: '3.8'
 
-# Ambiente de desenvolvimento local.
-# Postgres e Redis têm portas expostas ao host para acesso direto
-# via DBeaver, Redis Insight, etc.
-# A API roda fora do Docker (./mvnw spring-boot:run) apontando para localhost.
 
 services:
   db-liga:

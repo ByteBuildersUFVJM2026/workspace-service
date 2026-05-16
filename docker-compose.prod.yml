@@ -1,9 +1,5 @@
 version: '3.8'
 
-# Ambiente de produção (VPS).
-# Postgres e Redis NÃO expõem portas ao host — acessíveis apenas
-# pela rede interna `liga-network` via nome de serviço (DNS do Docker).
-# A API escuta na porta 80 do host e encaminha para 8080 internamente.
 
 networks:
   liga-network:
@@ -29,6 +25,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: appbyteredis
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - liga-network
     restart: unless-stopped
@@ -40,10 +37,9 @@ services:
       - "80:8080"
     env_file: .env
     environment:
-      # Sobrescreve os valores do .env com os hostnames internos do Docker.
-      # A API não usa "localhost" — ela usa o nome do serviço como hostname.
       - DB_URL=jdbc:postgresql://db-liga:5432/ligadb
       - REDIS_HOST=redis
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     depends_on:
       - db-liga
       - redis
