@@ -39,3 +39,4 @@ AGENTS.md
 ### Documentação local (não sobe ao GitHub) ###
 docs/
 .env
+dados-do-banco/
