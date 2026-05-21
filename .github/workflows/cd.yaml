@@ -1,1 +1,50 @@
-name: Continuous Delivery
+name: CD — Deploy to VPS
+
+on:
+  workflow_run:
+    workflows: ["CI Check - PR"]
+    types:
+      - completed
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    if: ${{github.event.workflow_run.conclusion == 'sucess' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build e Push da imagem
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+
+      # 4. SSH na VPS e faz o deploy
+      - name: Deploy na VPS via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            docker pull ghcr.io/${{ github.repository }}:latest
+            docker stop minha-app || true
+            docker rm minha-app || true
+            docker run -d \
+              --name minha-app \
+              --restart always \
+              -p 3000:3000 \
+              ghcr.io/${{ github.repository }}:latest
