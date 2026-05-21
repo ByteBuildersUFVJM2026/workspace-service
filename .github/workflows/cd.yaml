@@ -25,8 +25,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
-
+          tags: ghcr.io/arthurdmc2005/bytebuilders:latest
 
       - name: Deploy na VPS via SSH
         uses: appleboy/ssh-action@v1
@@ -40,7 +39,7 @@ jobs:
             docker stop bytebuilders || true
             docker rm bytebuilders || true
             docker run -d \
-              --name minha-app \
+              --name bytebuilders \
               --restart always \
               -p 3000:3000 \
               ghcr.io/arthurdmc2005/bytebuilders:latest
