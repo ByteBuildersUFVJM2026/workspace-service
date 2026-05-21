@@ -27,7 +27,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
 
-      # 4. SSH na VPS e faz o deploy
+
       - name: Deploy na VPS via SSH
         uses: appleboy/ssh-action@v1
         with:
