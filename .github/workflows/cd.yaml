@@ -36,11 +36,11 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker stop minha-app || true
-            docker rm minha-app || true
+            docker pull ghcr.io/arthurdmc2005/bytebuilders:latest
+            docker stop bytebuilders || true
+            docker rm bytebuilders || true
             docker run -d \
               --name minha-app \
               --restart always \
               -p 3000:3000 \
-              ghcr.io/${{ github.repository }}:latest
+              ghcr.io/arthurdmc2005/bytebuilders:latest
