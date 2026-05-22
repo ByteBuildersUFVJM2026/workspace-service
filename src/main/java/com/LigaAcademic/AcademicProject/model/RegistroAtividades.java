@@ -4,16 +4,16 @@ package com.LigaAcademic.AcademicProject.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contabilhoras")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContabilHoras {
+public class RegistroAtividades {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,11 +34,13 @@ public class ContabilHoras {
     @Column(name = "dataatividade")
     private LocalDate dataAtividade;
 
-    @Column(name = "participantes")
-    private String participantes;
-
-    @Column(name = "matricula")
-    private String matricula;
+    @ManyToMany
+    @JoinTable(
+            name = "membro_atividade",
+            joinColumns = @JoinColumn(name = "atividade_id"),
+            inverseJoinColumns = @JoinColumn(name = "membro_id")
+    )
+    private List<Membro> participantes = new ArrayList<>();
 
     public float getHoras() {
         return horas;
@@ -80,11 +82,11 @@ public class ContabilHoras {
         this.dataAtividade = dataAtividade;
     }
 
-    public String getParticipantes() {
+    public List<Membro> getParticipantes() {
         return participantes;
     }
 
-    public void setParticipantes(String participantes) {
+    public void setParticipantes(List<Membro> participantes) {
         this.participantes = participantes;
     }
 
@@ -96,25 +98,16 @@ public class ContabilHoras {
         this.id = id;
     }
 
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
     @Override
     public String toString() {
-        return "ContabilHoras{" +
+        return "RegistroAtividades{" +
                 "id=" + id +
                 ", horas=" + horas +
                 ", tipoAtividade='" + tipoAtividade + '\'' +
                 ", setorAtividade='" + setorAtividade + '\'' +
                 ", descAtividade='" + descAtividade + '\'' +
                 ", dataAtividade=" + dataAtividade +
-                ", participantes='" + participantes + '\'' +
-                ", matricula='" + matricula + '\'' +
+                ", participantes=" + participantes +
                 '}';
     }
 }

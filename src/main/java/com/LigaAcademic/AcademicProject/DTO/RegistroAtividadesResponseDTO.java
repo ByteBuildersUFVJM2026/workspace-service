@@ -1,16 +1,16 @@
 package com.LigaAcademic.AcademicProject.DTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public record ContabHorasResponseDTO(
+public record RegistroAtividadesResponseDTO(
 
         Long id,
         float horas,
-        String participantes,
+        List<String> participantes,
         String setorAtividade,
         String descAtividade,
         String tipoAtividade,
-        LocalDate dataAtividade,
-        String matricula
+        LocalDate dataAtividade
 ) {
 }
