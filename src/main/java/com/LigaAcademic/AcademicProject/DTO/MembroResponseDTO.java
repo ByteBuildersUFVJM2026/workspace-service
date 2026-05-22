@@ -8,6 +8,7 @@ public record MembroResponseDTO(
         String matricula,
         String cargo,
         String email,
+        float totalHoras,
         List<String> guildas
 ) {
 }

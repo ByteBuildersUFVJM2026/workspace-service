@@ -1,0 +1,1 @@
+ALTER TABLE membros ADD COLUMN total_horas REAL NOT NULL DEFAULT 0;

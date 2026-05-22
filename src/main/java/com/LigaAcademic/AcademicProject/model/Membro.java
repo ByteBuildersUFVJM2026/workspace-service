@@ -17,6 +17,8 @@ public class Membro {
 
     private String cargo;
 
+    private float totalHoras;
+
     @Column(unique = true,length = 11)
     private String matricula;
 
@@ -32,6 +34,9 @@ public class Membro {
     inverseJoinColumns = @JoinColumn(name = "guilda_model_id")
     )
     private List<GuildasModel> guildasModel = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "participantes")
+    private List<RegistroAtividades> atividades = new ArrayList<>();
 
 
 
@@ -96,6 +101,12 @@ public class Membro {
         return email;
     }
 
+    public float getTotalHoras() {
+        return totalHoras;
+    }
 
+    public void setTotalHoras(float totalHoras) {
+        this.totalHoras = totalHoras;
+    }
 
 }
