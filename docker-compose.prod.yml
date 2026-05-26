@@ -35,7 +35,7 @@ services:
     env_file: .env
     environment:
       - DB_URL=jdbc:postgresql://db-liga:5432/ligadb
-      - REDIS_HOST=redis
+      - REDIS_HOST=appbyteredis
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - SPRING_PROFILES_ACTIVE=prod
       - JAVA_TOOL_OPTIONS=-Xms512m -Xmx1024m
