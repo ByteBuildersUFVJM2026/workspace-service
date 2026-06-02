@@ -5,7 +5,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import jakarta.validation.ValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ import java.time.Instant;
 
 @Service
 public class TokenService {
+
+    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
 
     @Value("${api.security.token.secret}")
     private String secret;
@@ -40,8 +43,9 @@ public class TokenService {
                 .build()
                 .verify(token)
                 .getSubject();
-        }catch(JWTVerificationException exception){
-            throw new ValidationException("Ocorreu um problema na validação.", exception);
+        } catch (JWTVerificationException exception) {
+            log.warn("JWT inválido ou expirado: {}", exception.getMessage());
+            return null;
         }
     }
 
