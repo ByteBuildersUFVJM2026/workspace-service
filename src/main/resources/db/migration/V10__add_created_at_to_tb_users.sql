@@ -1,0 +1,2 @@
+ALTER TABLE tb_users
+    ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT NOW();
