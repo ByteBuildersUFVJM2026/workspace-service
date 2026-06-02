@@ -112,7 +112,7 @@ class UserControllerTest {
             mockMvc.perform(post("/admin/users")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(status().isBadRequest());
+                    .andExpect(status().isUnprocessableEntity());
         }
     }
 
