@@ -3,8 +3,6 @@ package com.LigaAcademic.AcademicProject.controller;
 import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesResponseDTO;
 import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
-import com.LigaAcademic.AcademicProject.Mapper.RegistroAtividadesMapper;
-import com.LigaAcademic.AcademicProject.model.RegistroAtividades;
 import com.LigaAcademic.AcademicProject.service.RegistroAtividadesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,47 +16,36 @@ import java.util.List;
 @RequestMapping("/contabilhoras")
 public class RegistroAtividadesController {
 
-    private final RegistroAtividadesMapper mapper;
     private final RegistroAtividadesService registroAtividadesService;
 
-    public RegistroAtividadesController(RegistroAtividadesMapper mapper,
-                                        RegistroAtividadesService registroAtividadesService) {
-        this.mapper = mapper;
+    public RegistroAtividadesController(RegistroAtividadesService registroAtividadesService) {
         this.registroAtividadesService = registroAtividadesService;
     }
 
     @PreAuthorize("hasRole('DIRETOR')")
     @PostMapping
     public ResponseEntity<RegistroAtividadesResponseDTO> contabilizarHoras(
-            @Validated @RequestBody RegistroAtividadesRequestDTO registroAtividadesRequestDTO) {
-
-        RegistroAtividades horasConvertido = mapper.horasParaEntidade(registroAtividadesRequestDTO);
-        RegistroAtividades horasSalvas = registroAtividadesService.registrarHoras(
-                horasConvertido, registroAtividadesRequestDTO.matriculas());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.horasParaResponseDTO(horasSalvas));
+            @Validated @RequestBody RegistroAtividadesRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(registroAtividadesService.registrarHoras(dto));
     }
 
     @GetMapping("/{matricula}")
     public ResponseEntity<List<RegistroAtividadesResponseDTO>> listarAtividadesDoParticipante(
             @PathVariable String matricula) {
-
-        List<RegistroAtividades> listaEntidades = registroAtividadesService.listarAtividadesParticipante(matricula);
-
-        List<RegistroAtividadesResponseDTO> respostaDto = listaEntidades.stream()
-                .map(mapper::horasParaResponseDTO)
-                .toList();
-
-        return ResponseEntity.ok(respostaDto);
+        return ResponseEntity.ok(registroAtividadesService.listarAtividadesParticipante(matricula));
     }
 
     @GetMapping
     public ResponseEntity<List<RegistroAtividadesResponseDTO>> listarHoras() {
-        List<RegistroAtividadesResponseDTO> respostaDto = registroAtividadesService.listarTodos().stream()
-                .map(mapper::horasParaResponseDTO)
-                .toList();
+        return ResponseEntity.ok(registroAtividadesService.listarTodos());
+    }
 
-        return ResponseEntity.ok(respostaDto);
+    @PreAuthorize("hasRole('DIRETOR')")
+    @PutMapping("/{id}")
+    public ResponseEntity<RegistroAtividadesResponseDTO> atualizar(
+            @PathVariable Long id,
+            @Validated @RequestBody RegistroAtividadesRequestDTO dto) {
+        return ResponseEntity.ok(registroAtividadesService.atualizarRegistroAtividades(id, dto));
     }
 
     @AuditarAcao(acao = "Delete de registro de horas.")
