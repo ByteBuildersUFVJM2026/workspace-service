@@ -1,5 +1,8 @@
 package com.LigaAcademic.AcademicProject.service;
 
+import com.LigaAcademic.AcademicProject.DTO.GuildasRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.GuildasResponseDTO;
+import com.LigaAcademic.AcademicProject.Mapper.GuildasMapper;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,48 +13,56 @@ import java.util.List;
 @Service
 public class GuildasService {
 
-    private GuildasRepository guildasRepository;
+    private final GuildasMapper guildasMapper;
+    private final GuildasRepository guildasRepository;
 
-    public GuildasService(GuildasRepository guildasRepository) {
+    public GuildasService(GuildasRepository guildasRepository, GuildasMapper guildasMapper) {
         this.guildasRepository = guildasRepository;
+        this.guildasMapper = guildasMapper;
     }
 
-    public List<GuildasModel> listaTodas() {
-        return guildasRepository.findAllComMembros();
+    public List<GuildasResponseDTO> listaTodas() {
+        return guildasRepository.findAllComMembros()
+                .stream()
+                .map(guildasMapper::guildaParaResponseDTO)
+                .toList();
     }
 
-    public GuildasModel buscarGuilda(Long id) {
-        return guildasRepository.findByIdComMembros(id)
-                .orElseThrow(() -> new EntityNotFoundException("Guilda não encontrada para o id: " + id));
+    public GuildasResponseDTO buscarGuilda(Long id) {
+        return guildasMapper.guildaParaResponseDTO(buscarEntidade(id));
     }
 
-    public GuildasModel registrarGuilda(GuildasModel novaGuilda) {
-        GuildasModel salva = guildasRepository.save(novaGuilda);
-        return buscarGuilda(salva.getId());
+    public GuildasResponseDTO registrarGuilda(GuildasRequestDTO dto) {
+        GuildasModel salva = guildasRepository.save(guildasMapper.guildaParaEntidade(dto));
+        return guildasMapper.guildaParaResponseDTO(buscarEntidade(salva.getId()));
     }
 
-    public GuildasModel atualizarGuilda(Long id, GuildasModel dadosAtualizados) {
-        GuildasModel guildaExistente = buscarGuilda(id);
+    public GuildasResponseDTO atualizarGuilda(Long id, GuildasRequestDTO dto) {
+        GuildasModel guildaExistente = buscarEntidade(id);
 
-        guildaExistente.setNome_guilda(dadosAtualizados.getNome_guilda());
-        guildaExistente.setTutor_guilda(dadosAtualizados.getTutor_guilda());
-        guildaExistente.setQuantidade_pessoas(dadosAtualizados.getQuantidade_pessoas());
+        guildaExistente.setNome_guilda(dto.nome_guilda());
+        guildaExistente.setTutor_guilda(dto.tutor_guilda());
+        guildaExistente.setQuantidade_pessoas(dto.quantidade_pessoas());
 
         guildasRepository.save(guildaExistente);
-        return buscarGuilda(id);
+        return guildasMapper.guildaParaResponseDTO(buscarEntidade(id));
     }
 
-    public GuildasModel atualizarQuantidadePessoas(Long id, int quantidadePessoas) {
-        GuildasModel guildaExistente = buscarGuilda(id);
+    public GuildasResponseDTO atualizarQuantidadePessoas(Long id, int quantidadePessoas) {
+        GuildasModel guildaExistente = buscarEntidade(id);
 
         guildaExistente.setQuantidade_pessoas(quantidadePessoas);
 
         guildasRepository.save(guildaExistente);
-        return buscarGuilda(id);
+        return guildasMapper.guildaParaResponseDTO(buscarEntidade(id));
     }
 
     public void removerGuilda(Long id) {
-        GuildasModel guildaParaRemover = buscarGuilda(id);
-        guildasRepository.delete(guildaParaRemover);
+        guildasRepository.delete(buscarEntidade(id));
+    }
+
+    private GuildasModel buscarEntidade(Long id) {
+        return guildasRepository.findByIdComMembros(id)
+                .orElseThrow(() -> new EntityNotFoundException("Guilda não encontrada para o id: " + id));
     }
 }

@@ -1,5 +1,8 @@
 package com.LigaAcademic.AcademicProject.service;
 
+import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesResponseDTO;
+import com.LigaAcademic.AcademicProject.Mapper.RegistroAtividadesMapper;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.model.RegistroAtividades;
 import com.LigaAcademic.AcademicProject.repository.MembroRepository;
@@ -15,31 +18,36 @@ public class RegistroAtividadesService {
 
     private final RegistroAtividadesRepository registroAtividadesRepository;
     private final MembroRepository membroRepository;
+    private final RegistroAtividadesMapper registroAtividadesMapper;
 
     public RegistroAtividadesService(RegistroAtividadesRepository registroAtividadesRepository,
-                                     MembroRepository membroRepository) {
+                                     MembroRepository membroRepository,
+                                     RegistroAtividadesMapper registroAtividadesMapper) {
         this.registroAtividadesRepository = registroAtividadesRepository;
         this.membroRepository = membroRepository;
+        this.registroAtividadesMapper = registroAtividadesMapper;
     }
 
     @Transactional
-    public RegistroAtividades registrarHoras(RegistroAtividades registroAtividades, List<String> matriculas) {
-        List<Membro> membros = matriculas.stream()
+    public RegistroAtividadesResponseDTO registrarHoras(RegistroAtividadesRequestDTO dto) {
+        List<Membro> membros = dto.matriculas().stream()
                 .map(matricula -> membroRepository.findByMatricula(matricula)
                         .orElseThrow(() -> new EntityNotFoundException(
                                 "Membro com matrícula " + matricula + " não encontrado")))
                 .toList();
 
-        membros.forEach(membro -> membro.setTotalHoras(membro.getTotalHoras() + registroAtividades.getHoras()));
-        registroAtividades.setParticipantes(membros);
+        RegistroAtividades entidade = registroAtividadesMapper.horasParaEntidade(dto);
+        membros.forEach(membro -> membro.setTotalHoras(membro.getTotalHoras() + entidade.getHoras()));
+        entidade.setParticipantes(membros);
 
         membroRepository.saveAll(membros);
-        RegistroAtividades salvo = registroAtividadesRepository.save(registroAtividades);
-        return registroAtividadesRepository.findByIdComParticipantes(salvo.getId()).orElseThrow();
+        RegistroAtividades salvo = registroAtividadesRepository.save(entidade);
+        RegistroAtividades salvoComParticipantes = registroAtividadesRepository.findByIdComParticipantes(salvo.getId()).orElseThrow();
+        return registroAtividadesMapper.horasParaResponseDTO(salvoComParticipantes);
     }
 
     @Transactional
-    public List<RegistroAtividades> listarAtividadesParticipante(String matricula) {
+    public List<RegistroAtividadesResponseDTO> listarAtividadesParticipante(String matricula) {
         if (matricula == null || matricula.trim().isEmpty()) {
             throw new IllegalArgumentException("Matrícula inválida");
         }
@@ -50,12 +58,17 @@ public class RegistroAtividadesService {
             throw new EntityNotFoundException("Nenhuma atividade encontrada para a matrícula " + matricula);
         }
 
-        return listaDeAtividades;
+        return listaDeAtividades.stream()
+                .map(registroAtividadesMapper::horasParaResponseDTO)
+                .toList();
     }
 
     @Transactional
-    public List<RegistroAtividades> listarTodos() {
-        return registroAtividadesRepository.findAllComParticipantes();
+    public List<RegistroAtividadesResponseDTO> listarTodos() {
+        return registroAtividadesRepository.findAllComParticipantes()
+                .stream()
+                .map(registroAtividadesMapper::horasParaResponseDTO)
+                .toList();
     }
 
     @Transactional
@@ -69,5 +82,37 @@ public class RegistroAtividadesService {
 
         membroRepository.saveAll(registro.getParticipantes());
         registroAtividadesRepository.delete(registro);
+    }
+
+    @Transactional
+    public RegistroAtividadesResponseDTO atualizarRegistroAtividades(Long id, RegistroAtividadesRequestDTO dto) {
+        RegistroAtividades registro = registroAtividadesRepository.findByIdComParticipantes(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Registro com id " + id + " não encontrado"));
+
+        registro.getParticipantes().forEach(membro ->
+                membro.setTotalHoras(membro.getTotalHoras() - registro.getHoras()));
+        membroRepository.saveAll(registro.getParticipantes());
+
+        List<Membro> novosParticipantes = dto.matriculas().stream()
+                .map(matricula -> membroRepository.findByMatricula(matricula)
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                "Membro com matrícula " + matricula + " não encontrado")))
+                .toList();
+
+        novosParticipantes.forEach(membro ->
+                membro.setTotalHoras(membro.getTotalHoras() + dto.horas()));
+        membroRepository.saveAll(novosParticipantes);
+
+        registro.setHoras(dto.horas());
+        registro.setTipoAtividade(dto.tipoAtividade());
+        registro.setSetorAtividade(dto.setorAtividade());
+        registro.setDescAtividade(dto.descAtividade());
+        registro.setDataAtividade(dto.dataAtividade());
+        registro.setParticipantes(novosParticipantes);
+
+        registroAtividadesRepository.save(registro);
+        return registroAtividadesMapper.horasParaResponseDTO(
+                registroAtividadesRepository.findByIdComParticipantes(id).orElseThrow());
     }
 }

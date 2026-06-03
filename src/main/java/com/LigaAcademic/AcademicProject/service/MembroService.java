@@ -1,35 +1,45 @@
 package com.LigaAcademic.AcademicProject.service;
 
+import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
+import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
 import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
 import com.LigaAcademic.AcademicProject.Infra.Exceptions.ConflictException;
+import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
 import com.LigaAcademic.AcademicProject.model.GuildasModel;
 import com.LigaAcademic.AcademicProject.model.Membro;
 import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
 import com.LigaAcademic.AcademicProject.repository.MembroRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class MembroService {
 
 
     private final MembroRepository membroRepository;
     private final GuildasRepository guildasRepository;
+    private final MembroMapper membroMapper;
 
-    public MembroService(MembroRepository membroRepository, GuildasRepository guildasRepository) {
+    public MembroService(MembroRepository membroRepository, GuildasRepository guildasRepository, MembroMapper membroMapper) {
         this.membroRepository = membroRepository;
         this.guildasRepository = guildasRepository;
+        this.membroMapper = membroMapper;
     }
 
-    public Membro registrarMembro(Membro membroNovo) {
+    public MembroResponseDTO registrarMembro(MembroRequestDTO dto) {
 
-        if(membroRepository.existsByMatricula(membroNovo.getMatricula())){
+        if(membroRepository.existsByMatricula(dto.matricula())){
             throw new ConflictException("Membro com a matricula registrada já existe");
         }
 
-        return membroRepository.save(membroNovo);
+        Membro entidade = membroMapper.paraEntidade(dto);
+        Membro salvo = membroRepository.save(entidade);
+        return membroMapper.paraResponseDTO(salvo);
+
     }
 
     public void removerMembro(String matriculaRemove) {
@@ -45,7 +55,7 @@ public class MembroService {
         membroRepository.delete(membroEncontrado);
     }
 
-    public Membro atualizarMembro(String matricula, MembroUpdateRequestDTO dto) {
+    public MembroResponseDTO atualizarMembro(String matricula, MembroUpdateRequestDTO dto) {
 
         Membro membroExistente = membroRepository.findByMatriculaComTudo(matricula)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -55,17 +65,26 @@ public class MembroService {
         membroExistente.setNome(dto.nome());
         membroExistente.setEmail(dto.email());
 
-        return membroRepository.save(membroExistente);
+        Membro salvo = membroRepository.save(membroExistente);
+        return membroMapper.paraResponseDTO(salvo);
+
     }
 
-    public Membro buscarMembro(String matricula){
+    public MembroResponseDTO buscarMembro(String matricula){
 
-        return membroRepository.findByMatriculaComTudo(matricula)
-                .orElseThrow(() -> new EntityNotFoundException("Membro não encontrado para a matrícula " + matricula));
+       Membro entidade = membroRepository.findByMatriculaComTudo(matricula)
+               .orElseThrow(() -> new EntityNotFoundException(
+                       "Erro ao buscar: matrícula " + matricula + " não encontrada"
+               ));
+
+       return membroMapper.paraResponseDTO(entidade);
     }
 
-    public List<Membro> listaTodos(){
-        return membroRepository.buscarTodosComGuildas();
+    public List<MembroResponseDTO> listarTodos(){
+        return membroRepository.buscarTodosComGuildas()
+                .stream()
+                .map(membroMapper::paraResponseDTO)
+                .toList();
     }
 
     public void vincularMembroGuilda(String matricula, Long id) {

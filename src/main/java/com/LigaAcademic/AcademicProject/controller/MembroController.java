@@ -4,8 +4,6 @@ import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
 import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
 import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
 import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
-import com.LigaAcademic.AcademicProject.model.Membro;
-import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,21 +18,19 @@ import java.util.List;
 public class MembroController {
 
 
-    private MembroMapper mapper;
+
     private MembroService membroService;
 
 
-    public MembroController(MembroMapper mapper, MembroService membroService) {
-        this.mapper = mapper;
+    public MembroController(MembroService membroService) {
+
         this.membroService = membroService;
     }
 
     @GetMapping
     public ResponseEntity<List<MembroResponseDTO>> listarTodos() {
-        List<MembroResponseDTO> membros = membroService.listaTodos().stream()
-                .map(mapper::paraResponseDTO)
-                .toList();
-        return ResponseEntity.ok(membros);
+
+        return ResponseEntity.ok(membroService.listarTodos());
     }
 
 
@@ -42,34 +38,24 @@ public class MembroController {
     @PostMapping
     public ResponseEntity<MembroResponseDTO> adicionarMembro(@RequestBody @Validated MembroRequestDTO membroRequestDTO){
 
-        Membro membroConvertido = mapper.paraEntidade(membroRequestDTO);
-
-        Membro membroSalvo = membroService.registrarMembro(membroConvertido);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.paraResponseDTO(membroSalvo));
+        return ResponseEntity.status(HttpStatus.CREATED).body(membroService.registrarMembro(membroRequestDTO));
     }
 
     @GetMapping("/{matricula}")
     public ResponseEntity<MembroResponseDTO> buscar(@PathVariable String matricula){
 
-        Membro membroEncontrado = membroService.buscarMembro(matricula);
-
-        MembroResponseDTO respostaDTO = mapper.paraResponseDTO(membroEncontrado);
-
-        return ResponseEntity.ok(respostaDTO);
+        return ResponseEntity.ok(membroService.buscarMembro(matricula));
 
     }
 
     @PreAuthorize("hasRole('DIRETOR')")
-    @PatchMapping("/{matricula}")
+    @PutMapping("/{matricula}")//Lembrar de mudar no postman para put para testar
     public ResponseEntity<MembroResponseDTO> atualizarMembro(
             @PathVariable String matricula,
             @Validated @RequestBody MembroUpdateRequestDTO membroUpdateRequestDTO) {
 
-        Membro membroSalvo = membroService.atualizarMembro(matricula, membroUpdateRequestDTO);
+        return ResponseEntity.ok(membroService.atualizarMembro(matricula,membroUpdateRequestDTO));
 
-        return ResponseEntity.ok(mapper.paraResponseDTO(membroSalvo));
     }
 
     @AuditarAcao(acao = "Delete de membro da liga.")
