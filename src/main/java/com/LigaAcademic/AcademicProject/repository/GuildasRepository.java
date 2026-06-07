@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.repository;
+package com.ligaacademic.academicproject.repository;
 
-import com.LigaAcademic.AcademicProject.model.GuildasModel;
+import com.ligaacademic.academicproject.model.GuildasModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,3 +16,4 @@ public interface GuildasRepository extends JpaRepository<GuildasModel, Long> {
     @Query("SELECT DISTINCT g FROM GuildasModel g LEFT JOIN FETCH g.membro")
     List<GuildasModel> findAllComMembros();
 }
+

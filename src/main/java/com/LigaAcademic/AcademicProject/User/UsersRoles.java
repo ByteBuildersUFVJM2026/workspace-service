@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.User;
+package com.ligaacademic.academicproject.user;
 
 import jakarta.persistence.Enumerated;
 
@@ -21,3 +21,4 @@ public enum UsersRoles {
        return role;
     }
 }
+

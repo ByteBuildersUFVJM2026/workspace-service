@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.DTO;
+package com.ligaacademic.academicproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
@@ -32,3 +32,4 @@ public record RegistroAtividadesRequestDTO(
         LocalDate dataAtividade
 ) {
 }
+

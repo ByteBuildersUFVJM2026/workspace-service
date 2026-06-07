@@ -1,10 +1,10 @@
-package com.LigaAcademic.AcademicProject.controller;
+package com.ligaacademic.academicproject.controller;
 
-import com.LigaAcademic.AcademicProject.DTO.GuildasQuantidadePessoasRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.GuildasRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.GuildasResponseDTO;
-import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
-import com.LigaAcademic.AcademicProject.service.GuildasService;
+import com.ligaacademic.academicproject.dto.GuildasQuantidadePessoasRequestDTO;
+import com.ligaacademic.academicproject.dto.GuildasRequestDTO;
+import com.ligaacademic.academicproject.dto.GuildasResponseDTO;
+import com.ligaacademic.academicproject.infra.auditoria.AuditarAcao;
+import com.ligaacademic.academicproject.service.GuildasService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

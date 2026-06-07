@@ -1,7 +1,7 @@
-package com.LigaAcademic.AcademicProject.Infra.auditoria;
+package com.ligaacademic.academicproject.infra.auditoria;
 
-import com.LigaAcademic.AcademicProject.model.AuditoriaLog;
-import com.LigaAcademic.AcademicProject.repository.AuditoriaRepository;
+import com.ligaacademic.academicproject.model.AuditoriaLog;
+import com.ligaacademic.academicproject.repository.AuditoriaRepository;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

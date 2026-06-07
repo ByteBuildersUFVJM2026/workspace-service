@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject;
+package com.ligaacademic.academicproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,3 +11,4 @@ public class AcademicProjectApplication {
 	}
 
 }
+

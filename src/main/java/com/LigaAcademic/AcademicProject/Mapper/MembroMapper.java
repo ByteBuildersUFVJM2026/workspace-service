@@ -1,9 +1,9 @@
-package com.LigaAcademic.AcademicProject.Mapper;
+package com.ligaacademic.academicproject.mapper;
 
-import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
-import com.LigaAcademic.AcademicProject.model.GuildasModel;
-import com.LigaAcademic.AcademicProject.model.Membro;
+import com.ligaacademic.academicproject.dto.MembroRequestDTO;
+import com.ligaacademic.academicproject.dto.MembroResponseDTO;
+import com.ligaacademic.academicproject.model.GuildasModel;
+import com.ligaacademic.academicproject.model.Membro;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

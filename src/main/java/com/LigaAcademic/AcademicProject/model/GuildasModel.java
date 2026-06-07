@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.model;
+package com.ligaacademic.academicproject.model;
 
 
 import jakarta.persistence.*;
@@ -77,3 +77,4 @@ public class GuildasModel {
                 '}';
     }
 }
+

@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.DTO;
+package com.ligaacademic.academicproject.dto;
 
-import com.LigaAcademic.AcademicProject.User.UsersRoles;
+import com.ligaacademic.academicproject.user.UsersRoles;
 
 import java.time.LocalDateTime;
 

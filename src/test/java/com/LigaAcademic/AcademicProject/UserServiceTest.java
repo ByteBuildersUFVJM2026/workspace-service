@@ -1,12 +1,12 @@
-package com.LigaAcademic.AcademicProject;
+package com.ligaacademic.academicproject;
 
-import com.LigaAcademic.AcademicProject.DTO.CreateUserRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.CreateUserResponseDTO;
-import com.LigaAcademic.AcademicProject.Infra.Exceptions.ConflictException;
-import com.LigaAcademic.AcademicProject.User.User;
-import com.LigaAcademic.AcademicProject.User.UsersRoles;
-import com.LigaAcademic.AcademicProject.repository.UsersRepository;
-import com.LigaAcademic.AcademicProject.service.UserService;
+import com.ligaacademic.academicproject.dto.CreateUserRequestDTO;
+import com.ligaacademic.academicproject.dto.CreateUserResponseDTO;
+import com.ligaacademic.academicproject.infra.exceptions.ConflictException;
+import com.ligaacademic.academicproject.user.User;
+import com.ligaacademic.academicproject.user.UsersRoles;
+import com.ligaacademic.academicproject.repository.UsersRepository;
+import com.ligaacademic.academicproject.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -132,3 +132,4 @@ class UserServiceTest {
         }
     }
 }
+

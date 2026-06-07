@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.repository;
+package com.ligaacademic.academicproject.repository;
 
-import com.LigaAcademic.AcademicProject.model.RegistroAtividades;
+import com.ligaacademic.academicproject.model.RegistroAtividades;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,3 +22,4 @@ public interface RegistroAtividadesRepository extends JpaRepository<RegistroAtiv
     Optional<RegistroAtividades> findByIdComParticipantes(@Param("id") Long id);
 
 }
+

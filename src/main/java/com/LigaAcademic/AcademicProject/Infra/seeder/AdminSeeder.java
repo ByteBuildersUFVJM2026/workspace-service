@@ -1,8 +1,8 @@
-package com.LigaAcademic.AcademicProject.Infra.seeder;
+package com.ligaacademic.academicproject.infra.seeder;
 
-import com.LigaAcademic.AcademicProject.User.User;
-import com.LigaAcademic.AcademicProject.User.UsersRoles;
-import com.LigaAcademic.AcademicProject.repository.UsersRepository;
+import com.ligaacademic.academicproject.user.User;
+import com.ligaacademic.academicproject.user.UsersRoles;
+import com.ligaacademic.academicproject.repository.UsersRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

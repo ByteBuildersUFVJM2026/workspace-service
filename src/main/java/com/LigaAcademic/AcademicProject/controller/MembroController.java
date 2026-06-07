@@ -1,15 +1,15 @@
-package com.LigaAcademic.AcademicProject.controller;
+package com.ligaacademic.academicproject.controller;
 
-import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
-import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
-import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
+import com.ligaacademic.academicproject.dto.MembroRequestDTO;
+import com.ligaacademic.academicproject.dto.MembroResponseDTO;
+import com.ligaacademic.academicproject.dto.MembroUpdateRequestDTO;
+import com.ligaacademic.academicproject.infra.auditoria.AuditarAcao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.LigaAcademic.AcademicProject.service.MembroService;
+import com.ligaacademic.academicproject.service.MembroService;
 
 import java.util.List;
 
@@ -88,3 +88,4 @@ public class MembroController {
         return ResponseEntity.noContent().build();
     }
 }
+

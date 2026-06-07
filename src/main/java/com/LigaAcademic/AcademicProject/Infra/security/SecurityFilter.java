@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.Infra.security;
+package com.ligaacademic.academicproject.infra.security;
 
-import com.LigaAcademic.AcademicProject.repository.UsersRepository;
+import com.ligaacademic.academicproject.repository.UsersRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,3 +47,4 @@ public class SecurityFilter extends OncePerRequestFilter {
         return authHeader.substring(7);
     }
 }
+

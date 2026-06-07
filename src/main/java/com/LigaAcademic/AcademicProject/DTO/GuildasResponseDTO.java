@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.DTO;
+package com.ligaacademic.academicproject.dto;
 
 import java.util.List;
 

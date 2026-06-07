@@ -1,13 +1,13 @@
-package com.LigaAcademic.AcademicProject;
+package com.ligaacademic.academicproject;
 
-import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
-import com.LigaAcademic.AcademicProject.Infra.Exceptions.ConflictException;
-import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
-import com.LigaAcademic.AcademicProject.model.Membro;
-import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
-import com.LigaAcademic.AcademicProject.repository.MembroRepository;
-import com.LigaAcademic.AcademicProject.service.MembroService;
+import com.ligaacademic.academicproject.dto.MembroRequestDTO;
+import com.ligaacademic.academicproject.dto.MembroResponseDTO;
+import com.ligaacademic.academicproject.infra.exceptions.ConflictException;
+import com.ligaacademic.academicproject.mapper.MembroMapper;
+import com.ligaacademic.academicproject.model.Membro;
+import com.ligaacademic.academicproject.repository.GuildasRepository;
+import com.ligaacademic.academicproject.repository.MembroRepository;
+import com.ligaacademic.academicproject.service.MembroService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

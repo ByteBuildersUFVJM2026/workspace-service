@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Infra.security.ratelimity;
+package com.ligaacademic.academicproject.infra.security.ratelimity;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.BucketConfiguration;

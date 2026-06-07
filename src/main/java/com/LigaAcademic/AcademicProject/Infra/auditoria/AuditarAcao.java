@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Infra.auditoria;
+package com.ligaacademic.academicproject.infra.auditoria;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

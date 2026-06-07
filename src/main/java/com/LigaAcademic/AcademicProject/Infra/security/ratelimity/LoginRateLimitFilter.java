@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Infra.security.ratelimity;
+package com.ligaacademic.academicproject.infra.security.ratelimity;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -65,3 +65,4 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
         return xfHeader.split(",")[0];
     }
 }
+

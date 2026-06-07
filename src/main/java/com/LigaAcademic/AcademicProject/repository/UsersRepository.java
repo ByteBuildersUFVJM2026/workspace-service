@@ -1,7 +1,7 @@
-package com.LigaAcademic.AcademicProject.repository;
+package com.ligaacademic.academicproject.repository;
 
-import com.LigaAcademic.AcademicProject.User.User;
-import com.LigaAcademic.AcademicProject.User.UsersRoles;
+import com.ligaacademic.academicproject.user.User;
+import com.ligaacademic.academicproject.user.UsersRoles;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,3 +26,4 @@ public interface UsersRepository extends JpaRepository<User, UUID> {
 
     void deleteByEmail(String email);
 }
+

@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.Infra.security;
+package com.ligaacademic.academicproject.infra.security;
 
-import com.LigaAcademic.AcademicProject.User.User;
+import com.ligaacademic.academicproject.user.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -54,3 +54,4 @@ public class TokenService {
     }
 
 }
+
