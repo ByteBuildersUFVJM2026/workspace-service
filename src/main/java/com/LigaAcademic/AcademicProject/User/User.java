@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.User;
+package com.ligaacademic.academicproject.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -89,3 +89,4 @@ public class User implements UserDetails {
         this.role = role;
     }
 }
+

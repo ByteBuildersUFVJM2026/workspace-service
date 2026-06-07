@@ -1,9 +1,9 @@
-package com.LigaAcademic.AcademicProject.controller;
+package com.ligaacademic.academicproject.controller;
 
-import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesResponseDTO;
-import com.LigaAcademic.AcademicProject.Infra.auditoria.AuditarAcao;
-import com.LigaAcademic.AcademicProject.service.RegistroAtividadesService;
+import com.ligaacademic.academicproject.dto.RegistroAtividadesRequestDTO;
+import com.ligaacademic.academicproject.dto.RegistroAtividadesResponseDTO;
+import com.ligaacademic.academicproject.infra.auditoria.AuditarAcao;
+import com.ligaacademic.academicproject.service.RegistroAtividadesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

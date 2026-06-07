@@ -1,10 +1,10 @@
-package com.LigaAcademic.AcademicProject.controller;
+package com.ligaacademic.academicproject.controller;
 
-import com.LigaAcademic.AcademicProject.DTO.AutheticationDTO;
-import com.LigaAcademic.AcademicProject.DTO.UserProfileResponseDTO;
-import com.LigaAcademic.AcademicProject.DTO.LoginResponseDTO;
-import com.LigaAcademic.AcademicProject.Infra.security.TokenService;
-import com.LigaAcademic.AcademicProject.User.User;
+import com.ligaacademic.academicproject.dto.AutheticationDTO;
+import com.ligaacademic.academicproject.dto.UserProfileResponseDTO;
+import com.ligaacademic.academicproject.dto.LoginResponseDTO;
+import com.ligaacademic.academicproject.infra.security.TokenService;
+import com.ligaacademic.academicproject.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

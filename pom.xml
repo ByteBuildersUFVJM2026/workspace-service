@@ -8,7 +8,7 @@
 		<version>3.3.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.LigaAcademic</groupId>
+	<groupId>com.ligaacademic</groupId>
 	<artifactId>AcademicProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>AcademicProject</name>
@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -140,6 +142,8 @@
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
+
+
 
 	</dependencies>
 

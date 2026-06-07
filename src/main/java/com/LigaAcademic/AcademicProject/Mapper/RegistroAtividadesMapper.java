@@ -1,9 +1,9 @@
-package com.LigaAcademic.AcademicProject.Mapper;
+package com.ligaacademic.academicproject.mapper;
 
-import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesResponseDTO;
-import com.LigaAcademic.AcademicProject.model.Membro;
-import com.LigaAcademic.AcademicProject.model.RegistroAtividades;
+import com.ligaacademic.academicproject.dto.RegistroAtividadesRequestDTO;
+import com.ligaacademic.academicproject.dto.RegistroAtividadesResponseDTO;
+import com.ligaacademic.academicproject.model.Membro;
+import com.ligaacademic.academicproject.model.RegistroAtividades;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,3 +19,4 @@ public interface RegistroAtividadesMapper {
         return membro.getMatricula();
     }
 }
+

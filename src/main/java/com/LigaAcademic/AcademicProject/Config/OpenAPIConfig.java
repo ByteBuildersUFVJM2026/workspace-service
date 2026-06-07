@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Config;
+package com.ligaacademic.academicproject.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.service;
+package com.ligaacademic.academicproject.service;
 
-import com.LigaAcademic.AcademicProject.repository.UsersRepository;
+import com.ligaacademic.academicproject.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,3 +23,4 @@ public class AuthorizationService implements UserDetailsService {
         return usersRepository.findByEmail(username);
     }
 }
+

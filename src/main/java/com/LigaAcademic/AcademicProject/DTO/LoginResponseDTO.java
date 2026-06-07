@@ -1,5 +1,6 @@
-package com.LigaAcademic.AcademicProject.DTO;
+package com.ligaacademic.academicproject.dto;
 
 public record LoginResponseDTO(String token) {
 
 }
+

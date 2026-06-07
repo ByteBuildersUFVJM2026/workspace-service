@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.DTO;
+package com.ligaacademic.academicproject.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,3 +19,4 @@ public record MembroRequestDTO(
         @NotBlank(message = "O email não pode ser vazio.")
          String email) {
 }
+

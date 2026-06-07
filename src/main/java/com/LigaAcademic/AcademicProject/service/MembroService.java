@@ -1,14 +1,14 @@
-package com.LigaAcademic.AcademicProject.service;
+package com.ligaacademic.academicproject.service;
 
-import com.LigaAcademic.AcademicProject.DTO.MembroRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.MembroResponseDTO;
-import com.LigaAcademic.AcademicProject.DTO.MembroUpdateRequestDTO;
-import com.LigaAcademic.AcademicProject.Infra.Exceptions.ConflictException;
-import com.LigaAcademic.AcademicProject.Mapper.MembroMapper;
-import com.LigaAcademic.AcademicProject.model.GuildasModel;
-import com.LigaAcademic.AcademicProject.model.Membro;
-import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
-import com.LigaAcademic.AcademicProject.repository.MembroRepository;
+import com.ligaacademic.academicproject.dto.MembroRequestDTO;
+import com.ligaacademic.academicproject.dto.MembroResponseDTO;
+import com.ligaacademic.academicproject.dto.MembroUpdateRequestDTO;
+import com.ligaacademic.academicproject.infra.exceptions.ConflictException;
+import com.ligaacademic.academicproject.mapper.MembroMapper;
+import com.ligaacademic.academicproject.model.GuildasModel;
+import com.ligaacademic.academicproject.model.Membro;
+import com.ligaacademic.academicproject.repository.GuildasRepository;
+import com.ligaacademic.academicproject.repository.MembroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -126,5 +126,6 @@ public class MembroService {
 
 
 }
+
 
 

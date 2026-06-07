@@ -1,12 +1,12 @@
-package com.LigaAcademic.AcademicProject.service;
+package com.ligaacademic.academicproject.service;
 
-import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.RegistroAtividadesResponseDTO;
-import com.LigaAcademic.AcademicProject.Mapper.RegistroAtividadesMapper;
-import com.LigaAcademic.AcademicProject.model.Membro;
-import com.LigaAcademic.AcademicProject.model.RegistroAtividades;
-import com.LigaAcademic.AcademicProject.repository.MembroRepository;
-import com.LigaAcademic.AcademicProject.repository.RegistroAtividadesRepository;
+import com.ligaacademic.academicproject.dto.RegistroAtividadesRequestDTO;
+import com.ligaacademic.academicproject.dto.RegistroAtividadesResponseDTO;
+import com.ligaacademic.academicproject.mapper.RegistroAtividadesMapper;
+import com.ligaacademic.academicproject.model.Membro;
+import com.ligaacademic.academicproject.model.RegistroAtividades;
+import com.ligaacademic.academicproject.repository.MembroRepository;
+import com.ligaacademic.academicproject.repository.RegistroAtividadesRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

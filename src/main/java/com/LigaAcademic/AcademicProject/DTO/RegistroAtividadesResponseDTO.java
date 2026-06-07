@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.DTO;
+package com.ligaacademic.academicproject.dto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,3 +14,4 @@ public record RegistroAtividadesResponseDTO(
         LocalDate dataAtividade
 ) {
 }
+

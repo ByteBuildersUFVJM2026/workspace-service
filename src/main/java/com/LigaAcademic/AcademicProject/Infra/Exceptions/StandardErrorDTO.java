@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Infra.Exceptions;
+package com.ligaacademic.academicproject.infra.exceptions;
 
 import java.time.Instant;
 
@@ -10,3 +10,4 @@ public record StandardErrorDTO(
         String path
 ) {
 }
+

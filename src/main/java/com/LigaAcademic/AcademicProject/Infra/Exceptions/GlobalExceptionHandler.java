@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Infra.Exceptions;
+package com.ligaacademic.academicproject.infra.exceptions;
 
 
 import jakarta.persistence.EntityNotFoundException;
@@ -88,3 +88,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(erro);
     }
 }
+

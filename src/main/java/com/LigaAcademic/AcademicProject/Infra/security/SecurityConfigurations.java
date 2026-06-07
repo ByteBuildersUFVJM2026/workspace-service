@@ -1,6 +1,6 @@
-package com.LigaAcademic.AcademicProject.Infra.security;
+package com.ligaacademic.academicproject.infra.security;
 
-import com.LigaAcademic.AcademicProject.Infra.security.ratelimity.LoginRateLimitFilter;
+import com.ligaacademic.academicproject.infra.security.ratelimity.LoginRateLimitFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

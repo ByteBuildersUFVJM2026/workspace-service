@@ -1,10 +1,10 @@
-package com.LigaAcademic.AcademicProject.service;
+package com.ligaacademic.academicproject.service;
 
-import com.LigaAcademic.AcademicProject.DTO.GuildasRequestDTO;
-import com.LigaAcademic.AcademicProject.DTO.GuildasResponseDTO;
-import com.LigaAcademic.AcademicProject.Mapper.GuildasMapper;
-import com.LigaAcademic.AcademicProject.model.GuildasModel;
-import com.LigaAcademic.AcademicProject.repository.GuildasRepository;
+import com.ligaacademic.academicproject.dto.GuildasRequestDTO;
+import com.ligaacademic.academicproject.dto.GuildasResponseDTO;
+import com.ligaacademic.academicproject.mapper.GuildasMapper;
+import com.ligaacademic.academicproject.model.GuildasModel;
+import com.ligaacademic.academicproject.repository.GuildasRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

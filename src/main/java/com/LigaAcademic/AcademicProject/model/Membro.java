@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.model;
+package com.ligaacademic.academicproject.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -110,3 +110,4 @@ public class Membro {
     }
 
 }
+

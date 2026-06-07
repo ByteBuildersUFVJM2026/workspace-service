@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.model;
+package com.ligaacademic.academicproject.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,3 +23,4 @@ public class AuditoriaLog {
     private String nomeMetodo;
     private LocalDateTime dataHora;
 }
+

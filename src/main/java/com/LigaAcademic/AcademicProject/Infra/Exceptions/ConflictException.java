@@ -1,4 +1,4 @@
-package com.LigaAcademic.AcademicProject.Infra.Exceptions;
+package com.ligaacademic.academicproject.infra.exceptions;
 
 public class ConflictException extends RuntimeException {
 
