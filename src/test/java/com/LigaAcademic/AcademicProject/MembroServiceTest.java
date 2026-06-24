@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +48,7 @@ public class MembroServiceTest {
             entidade.setMatricula("12345678901");
             entidade.setNome("Arthur");
 
-            MembroResponseDTO responseEsperado = new MembroResponseDTO("Arthur", "12345678901", "Membro", "arthur@email.com", 0f, List.of());
+            MembroResponseDTO responseEsperado = new MembroResponseDTO("Arthur", "12345678901", "Membro", "arthur@email.com", BigDecimal.ZERO, List.of());
 
             when(membroRepository.existsByMatricula("12345678901")).thenReturn(false);
             when(membroMapper.paraEntidade(dto)).thenReturn(entidade);

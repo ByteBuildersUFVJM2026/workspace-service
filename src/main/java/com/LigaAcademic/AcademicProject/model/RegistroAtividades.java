@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,8 @@ public class RegistroAtividades {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private float horas;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal horas;
 
     @Column(name = "tipoatividade")
     private String tipoAtividade;
@@ -42,11 +44,11 @@ public class RegistroAtividades {
     )
     private List<Membro> participantes = new ArrayList<>();
 
-    public float getHoras() {
+    public BigDecimal getHoras() {
         return horas;
     }
 
-    public void setHoras(float horas) {
+    public void setHoras(BigDecimal horas) {
         this.horas = horas;
     }
 

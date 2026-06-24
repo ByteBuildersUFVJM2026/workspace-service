@@ -1,15 +1,15 @@
 package com.ligaacademic.academicproject.controller;
 
-import com.ligaacademic.academicproject.dto.AutheticationDTO;
+import com.ligaacademic.academicproject.dto.AuthenticationDTO;
 import com.ligaacademic.academicproject.dto.UserProfileResponseDTO;
 import com.ligaacademic.academicproject.dto.LoginResponseDTO;
 import com.ligaacademic.academicproject.infra.security.TokenService;
 import com.ligaacademic.academicproject.user.User;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +25,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Validated AutheticationDTO data) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User) auth.getPrincipal());

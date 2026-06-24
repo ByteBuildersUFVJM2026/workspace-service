@@ -6,12 +6,13 @@ import com.ligaacademic.academicproject.dto.MembroUpdateRequestDTO;
 import com.ligaacademic.academicproject.infra.auditoria.AuditarAcao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ligaacademic.academicproject.service.MembroService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/membros")
@@ -28,9 +29,9 @@ public class MembroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MembroResponseDTO>> listarTodos() {
+    public ResponseEntity<Page<MembroResponseDTO>> listarTodos(@PageableDefault(size = 20, sort = "nome") Pageable pageable) {
 
-        return ResponseEntity.ok(membroService.listarTodos());
+        return ResponseEntity.ok(membroService.listarTodos(pageable));
     }
 
 

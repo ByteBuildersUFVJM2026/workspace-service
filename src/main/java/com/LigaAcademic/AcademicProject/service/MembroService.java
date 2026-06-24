@@ -11,7 +11,10 @@ import com.ligaacademic.academicproject.repository.GuildasRepository;
 import com.ligaacademic.academicproject.repository.MembroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -80,11 +83,10 @@ public class MembroService {
        return membroMapper.paraResponseDTO(entidade);
     }
 
-    public List<MembroResponseDTO> listarTodos(){
-        return membroRepository.buscarTodosComGuildas()
-                .stream()
-                .map(membroMapper::paraResponseDTO)
-                .toList();
+    @Transactional(readOnly = true)
+    public Page<MembroResponseDTO> listarTodos(Pageable pageable){
+        return membroRepository.findAll(pageable)
+                .map(membroMapper::paraResponseDTO);
     }
 
     public void vincularMembroGuilda(String matricula, Long id) {

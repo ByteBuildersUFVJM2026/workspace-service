@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface RegistroAtividadesMapper {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "participantes", ignore = true)
     RegistroAtividades horasParaEntidade(RegistroAtividadesRequestDTO registroAtividadesRequestDTO);
 

@@ -1,5 +1,6 @@
 package com.ligaacademic.academicproject.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record MembroResponseDTO(
@@ -7,7 +8,7 @@ public record MembroResponseDTO(
         String matricula,
         String cargo,
         String email,
-        float totalHoras,
+        BigDecimal totalHoras,
         List<String> guildas
 ) {
 }
