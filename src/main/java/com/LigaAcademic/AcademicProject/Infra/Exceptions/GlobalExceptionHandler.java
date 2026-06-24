@@ -3,10 +3,12 @@ package com.ligaacademic.academicproject.infra.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import com.ligaacademic.academicproject.infra.storage.DocumentStorageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -83,6 +85,32 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Dados inválidos",
                 mensagem,
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(erro);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<StandardErrorDTO> handlerMaxUploadSizeExceededException(MaxUploadSizeExceededException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.PAYLOAD_TOO_LARGE;
+        StandardErrorDTO erro = new StandardErrorDTO(
+                Instant.now(),
+                status.value(),
+                "Arquivo muito grande",
+                "Arquivo excede o limite permitido",
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(erro);
+    }
+
+    @ExceptionHandler(DocumentStorageException.class)
+    public ResponseEntity<StandardErrorDTO> handlerDocumentStorageException(DocumentStorageException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_GATEWAY;
+        StandardErrorDTO erro = new StandardErrorDTO(
+                Instant.now(),
+                status.value(),
+                "Falha no storage",
+                e.getMessage(),
                 request.getRequestURI()
         );
         return ResponseEntity.status(status).body(erro);

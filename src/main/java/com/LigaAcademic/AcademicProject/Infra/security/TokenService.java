@@ -20,12 +20,18 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
+    @Value("${api.security.token.issuer}")
+    private String issuer;
+
+    @Value("${api.security.token.expiration-seconds}")
+    private long expirationSeconds;
+
     public String generateToken(User user){
 
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-                    .withIssuer("auth-api")
+                    .withIssuer(issuer)
                     .withSubject(user.getEmail())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
@@ -39,7 +45,7 @@ public class TokenService {
         try{
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.require(algorithm)
-                .withIssuer("auth-api")
+                .withIssuer(issuer)
                 .build()
                 .verify(token)
                 .getSubject();
@@ -50,7 +56,7 @@ public class TokenService {
     }
 
     public Instant genExpirationDate(){
-        return Instant.now().plusSeconds(2 * 3600);
+        return Instant.now().plusSeconds(expirationSeconds);
     }
 
 }

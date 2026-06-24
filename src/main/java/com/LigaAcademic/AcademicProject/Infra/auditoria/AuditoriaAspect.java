@@ -35,7 +35,7 @@ public class AuditoriaAspect {
             return resultado;
 
         } catch (Exception e) {
-            salvarLogBanco(email, auditarAcao.acao(), nomeMetodo, "FALHA: " + e.getMessage());
+            salvarLogBanco(email, auditarAcao.acao(), nomeMetodo, resumirFalha(e));
 
             throw e;
         }
@@ -54,7 +54,18 @@ public class AuditoriaAspect {
                 .usuarioEmail(email)
                 .acao(acao)
                 .nomeMetodo(nomeMetodo)
+                .status(status)
                 .dataHora(LocalDateTime.now())
                 .build());
+    }
+
+    private String resumirFalha(Exception exception) {
+        String mensagem = exception.getMessage();
+        if (mensagem == null || mensagem.isBlank()) {
+            return "FALHA: " + exception.getClass().getSimpleName();
+        }
+
+        String status = "FALHA: " + mensagem;
+        return status.length() <= 500 ? status : status.substring(0, 500);
     }
 }

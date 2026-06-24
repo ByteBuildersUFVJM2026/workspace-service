@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,8 @@ public class Membro {
 
     private String cargo;
 
-    private float totalHoras;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalHoras = BigDecimal.ZERO;
 
     @Column(unique = true,length = 11)
     private String matricula;
@@ -101,11 +103,11 @@ public class Membro {
         return email;
     }
 
-    public float getTotalHoras() {
+    public BigDecimal getTotalHoras() {
         return totalHoras;
     }
 
-    public void setTotalHoras(float totalHoras) {
+    public void setTotalHoras(BigDecimal totalHoras) {
         this.totalHoras = totalHoras;
     }
 

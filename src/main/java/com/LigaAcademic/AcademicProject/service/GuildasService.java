@@ -6,9 +6,10 @@ import com.ligaacademic.academicproject.mapper.GuildasMapper;
 import com.ligaacademic.academicproject.model.GuildasModel;
 import com.ligaacademic.academicproject.repository.GuildasRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GuildasService {
@@ -21,11 +22,10 @@ public class GuildasService {
         this.guildasMapper = guildasMapper;
     }
 
-    public List<GuildasResponseDTO> listaTodas() {
-        return guildasRepository.findAllComMembros()
-                .stream()
-                .map(guildasMapper::guildaParaResponseDTO)
-                .toList();
+    @Transactional(readOnly = true)
+    public Page<GuildasResponseDTO> listaTodas(Pageable pageable) {
+        return guildasRepository.findAll(pageable)
+                .map(guildasMapper::guildaParaResponseDTO);
     }
 
     public GuildasResponseDTO buscarGuilda(Long id) {
@@ -40,9 +40,9 @@ public class GuildasService {
     public GuildasResponseDTO atualizarGuilda(Long id, GuildasRequestDTO dto) {
         GuildasModel guildaExistente = buscarEntidade(id);
 
-        guildaExistente.setNome_guilda(dto.nome_guilda());
-        guildaExistente.setTutor_guilda(dto.tutor_guilda());
-        guildaExistente.setQuantidade_pessoas(dto.quantidade_pessoas());
+        guildaExistente.setNomeGuilda(dto.nome_guilda());
+        guildaExistente.setTutorGuilda(dto.tutor_guilda());
+        guildaExistente.setQuantidadePessoas(dto.quantidade_pessoas());
 
         guildasRepository.save(guildaExistente);
         return guildasMapper.guildaParaResponseDTO(buscarEntidade(id));
@@ -51,7 +51,7 @@ public class GuildasService {
     public GuildasResponseDTO atualizarQuantidadePessoas(Long id, int quantidadePessoas) {
         GuildasModel guildaExistente = buscarEntidade(id);
 
-        guildaExistente.setQuantidade_pessoas(quantidadePessoas);
+        guildaExistente.setQuantidadePessoas(quantidadePessoas);
 
         guildasRepository.save(guildaExistente);
         return guildasMapper.guildaParaResponseDTO(buscarEntidade(id));

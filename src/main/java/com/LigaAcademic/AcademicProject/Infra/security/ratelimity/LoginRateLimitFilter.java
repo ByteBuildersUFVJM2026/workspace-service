@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,9 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
 
     private final RateLimitService rateLimitService;
     private final ObjectMapper mapper = new ObjectMapper();
+
+    @Value("${api.security.trust-forwarded-headers:false}")
+    private boolean trustForwardedHeaders;
 
     public LoginRateLimitFilter(RateLimitService rateLimitService) {
         this.rateLimitService = rateLimitService;
@@ -36,7 +40,7 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
             return;
         }
 
-        String clientIp = getClientIP(request);
+        String clientIp = getClientIp(request);
 
         if (rateLimitService.allowRequest(clientIp)) {
             filterChain.doFilter(request, response);
@@ -55,14 +59,14 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
     }
 
 
-    private String getClientIP(HttpServletRequest request) {
+    private String getClientIp(HttpServletRequest request) {
 
         String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null) {
-
+        if (!trustForwardedHeaders || xfHeader == null || xfHeader.isBlank()) {
             return request.getRemoteAddr();
         }
-        return xfHeader.split(",")[0];
+
+        return xfHeader.split(",")[0].trim();
     }
 }
 

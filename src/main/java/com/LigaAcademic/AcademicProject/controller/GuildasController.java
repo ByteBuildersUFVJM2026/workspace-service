@@ -5,13 +5,14 @@ import com.ligaacademic.academicproject.dto.GuildasRequestDTO;
 import com.ligaacademic.academicproject.dto.GuildasResponseDTO;
 import com.ligaacademic.academicproject.infra.auditoria.AuditarAcao;
 import com.ligaacademic.academicproject.service.GuildasService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/guildas")
@@ -24,8 +25,8 @@ public class GuildasController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GuildasResponseDTO>> listarTodas() {
-        return ResponseEntity.ok(guildasService.listaTodas());
+    public ResponseEntity<Page<GuildasResponseDTO>> listarTodas(@PageableDefault(size = 20, sort = "nomeGuilda") Pageable pageable) {
+        return ResponseEntity.ok(guildasService.listaTodas(pageable));
     }
 
     @PreAuthorize("hasRole('DIRETOR')")

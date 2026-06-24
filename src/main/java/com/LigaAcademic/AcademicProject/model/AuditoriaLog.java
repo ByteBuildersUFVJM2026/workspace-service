@@ -21,6 +21,7 @@ public class AuditoriaLog {
     private String usuarioEmail;
     private String acao;
     private String nomeMetodo;
+    private String status;
     private LocalDateTime dataHora;
 }
 

@@ -4,6 +4,9 @@ import com.ligaacademic.academicproject.dto.RegistroAtividadesRequestDTO;
 import com.ligaacademic.academicproject.dto.RegistroAtividadesResponseDTO;
 import com.ligaacademic.academicproject.infra.auditoria.AuditarAcao;
 import com.ligaacademic.academicproject.service.RegistroAtividadesService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,8 +39,8 @@ public class RegistroAtividadesController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RegistroAtividadesResponseDTO>> listarHoras() {
-        return ResponseEntity.ok(registroAtividadesService.listarTodos());
+    public ResponseEntity<Page<RegistroAtividadesResponseDTO>> listarHoras(@PageableDefault(size = 20, sort = "dataAtividade") Pageable pageable) {
+        return ResponseEntity.ok(registroAtividadesService.listarTodos(pageable));
     }
 
     @PreAuthorize("hasRole('DIRETOR')")

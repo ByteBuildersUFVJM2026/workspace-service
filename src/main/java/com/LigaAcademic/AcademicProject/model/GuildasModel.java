@@ -1,7 +1,12 @@
 package com.ligaacademic.academicproject.model;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -15,14 +20,16 @@ public class GuildasModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
-    private String nome_guilda;
+    @Column(name = "nome_guilda")
+    private String nomeGuilda;
 
-    private String tutor_guilda;
+    @Column(name = "tutor_guilda")
+    private String tutorGuilda;
 
-    private int quantidade_pessoas;
+    @Column(name = "quantidade_pessoas")
+    private int quantidadePessoas;
 
     @ManyToMany(mappedBy = "guildasModel")
     private List<Membro> membro;
@@ -35,20 +42,20 @@ public class GuildasModel {
         this.id = id;
     }
 
-    public String getNome_guilda() {
-        return nome_guilda;
+    public String getNomeGuilda() {
+        return nomeGuilda;
     }
 
-    public void setNome_guilda(String nome_guilda) {
-        this.nome_guilda = nome_guilda;
+    public void setNomeGuilda(String nomeGuilda) {
+        this.nomeGuilda = nomeGuilda;
     }
 
-    public String getTutor_guilda() {
-        return tutor_guilda;
+    public String getTutorGuilda() {
+        return tutorGuilda;
     }
 
-    public void setTutor_guilda(String tutor_guilda) {
-        this.tutor_guilda = tutor_guilda;
+    public void setTutorGuilda(String tutorGuilda) {
+        this.tutorGuilda = tutorGuilda;
     }
 
     public List<Membro> getMembro() {
@@ -59,22 +66,21 @@ public class GuildasModel {
         this.membro = membro;
     }
 
-    public int getQuantidade_pessoas() {
-        return quantidade_pessoas;
+    public int getQuantidadePessoas() {
+        return quantidadePessoas;
     }
 
-    public void setQuantidade_pessoas(int quantidade_pessoas) {
-        this.quantidade_pessoas = quantidade_pessoas;
+    public void setQuantidadePessoas(int quantidadePessoas) {
+        this.quantidadePessoas = quantidadePessoas;
     }
 
     @Override
     public String toString() {
         return "GuildasModel{" +
                 "id=" + id +
-                ", nome_guilda='" + nome_guilda + '\'' +
-                ", tutor_guilda='" + tutor_guilda + '\'' +
-                ", quantidade_pessoas=" + quantidade_pessoas +
+                ", nomeGuilda='" + nomeGuilda + '\'' +
+                ", tutorGuilda='" + tutorGuilda + '\'' +
+                ", quantidadePessoas=" + quantidadePessoas +
                 '}';
     }
 }
-
