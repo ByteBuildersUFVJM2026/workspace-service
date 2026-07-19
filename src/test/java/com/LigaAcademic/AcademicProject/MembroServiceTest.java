@@ -1,13 +1,13 @@
 package com.ligaacademic.academicproject;
 
-import com.ligaacademic.academicproject.dto.MembroRequestDTO;
-import com.ligaacademic.academicproject.dto.MembroResponseDTO;
-import com.ligaacademic.academicproject.infra.exceptions.ConflictException;
-import com.ligaacademic.academicproject.mapper.MembroMapper;
-import com.ligaacademic.academicproject.model.Membro;
-import com.ligaacademic.academicproject.repository.GuildasRepository;
-import com.ligaacademic.academicproject.repository.MembroRepository;
-import com.ligaacademic.academicproject.service.MembroService;
+import com.ligaacademic.academicproject.membros.api.MembroRequestDTO;
+import com.ligaacademic.academicproject.membros.api.MembroResponseDTO;
+import com.ligaacademic.academicproject.shared.exceptions.ConflictException;
+import com.ligaacademic.academicproject.membros.infra.MembroMapper;
+import com.ligaacademic.academicproject.membros.domain.Membro;
+import com.ligaacademic.academicproject.guildas.application.GuildaLookupService;
+import com.ligaacademic.academicproject.membros.infra.MembroRepository;
+import com.ligaacademic.academicproject.membros.application.MembroService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ public class MembroServiceTest {
     private MembroRepository membroRepository;
 
     @Mock
-    private GuildasRepository guildasRepository;
+    private GuildaLookupService guildaLookupService;
 
     @Mock
     private MembroMapper membroMapper;

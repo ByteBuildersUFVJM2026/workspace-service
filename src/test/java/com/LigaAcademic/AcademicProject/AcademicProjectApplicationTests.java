@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
-import com.ligaacademic.academicproject.infra.seeder.AdminSeeder;
+import com.ligaacademic.academicproject.shared.seeder.AdminSeeder;
 import io.lettuce.core.RedisClient;
 import io.github.bucket4j.redis.lettuce.cas.LettuceBasedProxyManager;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

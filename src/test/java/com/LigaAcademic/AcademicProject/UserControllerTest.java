@@ -1,14 +1,14 @@
 package com.ligaacademic.academicproject;
 
-import com.ligaacademic.academicproject.dto.CreateUserRequestDTO;
-import com.ligaacademic.academicproject.dto.CreateUserResponseDTO;
-import com.ligaacademic.academicproject.infra.security.SecurityConfigurations;
-import com.ligaacademic.academicproject.infra.security.TokenService;
-import com.ligaacademic.academicproject.infra.security.ratelimity.LoginRateLimitFilter;
-import com.ligaacademic.academicproject.user.UsersRoles;
-import com.ligaacademic.academicproject.controller.UserController;
-import com.ligaacademic.academicproject.repository.UsersRepository;
-import com.ligaacademic.academicproject.service.UserService;
+import com.ligaacademic.academicproject.usuarios.api.CreateUserRequestDTO;
+import com.ligaacademic.academicproject.usuarios.api.CreateUserResponseDTO;
+import com.ligaacademic.academicproject.shared.security.SecurityConfigurations;
+import com.ligaacademic.academicproject.shared.security.TokenService;
+import com.ligaacademic.academicproject.shared.security.ratelimity.LoginRateLimitFilter;
+import com.ligaacademic.academicproject.usuarios.domain.UsersRoles;
+import com.ligaacademic.academicproject.usuarios.api.UserController;
+import com.ligaacademic.academicproject.usuarios.infra.UsersRepository;
+import com.ligaacademic.academicproject.usuarios.application.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;

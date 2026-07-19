@@ -1,0 +1,38 @@
+package com.ligaacademic.academicproject.membros.infra;
+
+import com.ligaacademic.academicproject.membros.domain.Membro;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import jakarta.persistence.LockModeType;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface MembroRepository extends JpaRepository<Membro,Long> {
+
+    Optional <Membro> findByMatricula(String matricula);
+
+    @Query("SELECT m FROM Membro m LEFT JOIN FETCH m.guildasModel ")
+    List<Membro> buscarTodosComGuildas();
+
+    @Query("SELECT m FROM Membro m LEFT JOIN FETCH m.guildasModel WHERE m.matricula = :matricula")
+    Optional<Membro> findByMatriculaComTudo(String matricula);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT m FROM Membro m WHERE m.matricula IN :matriculas")
+    List<Membro> findAllByMatriculaInForUpdate(@Param("matriculas") Collection<String> matriculas);
+
+    boolean existsByMatricula(String matricula);
+
+}
+
+
+
+
+
+
