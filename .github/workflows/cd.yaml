@@ -3,7 +3,7 @@ name: CD — Deploy to VPS
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 
@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/arthurdmc2005/bytebuilders:latest
+          tags: ghcr.io/bytebuildersufvjm2026/workspace-service:latest
 
       - name: Deploy na VPS via SSH
         uses: appleboy/ssh-action@v1
