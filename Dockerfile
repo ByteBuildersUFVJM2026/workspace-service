@@ -13,6 +13,7 @@ RUN mvn package -Dmaven.test.skip=true -q
 
 FROM eclipse-temurin:21-jre-alpine AS runtime
 
+LABEL org.opencontainers.image.source="https://github.com/ByteBuildersUFVJM2026/workspace-service"
 
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring

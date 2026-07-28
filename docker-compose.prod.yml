@@ -55,7 +55,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: ghcr.io/arthurdmc2005/bytebuilders:latest
+    image: ghcr.io/bytebuildersufvjm2026/workspace-service:latest
     container_name: liga-api
     env_file: .env
     environment:
