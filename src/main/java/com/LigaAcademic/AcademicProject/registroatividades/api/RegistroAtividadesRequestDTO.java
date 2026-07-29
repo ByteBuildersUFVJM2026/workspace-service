@@ -1,6 +1,5 @@
 package com.ligaacademic.academicproject.registroatividades.api;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,7 +30,6 @@ public record RegistroAtividadesRequestDTO(
 
         @NotNull
         @PastOrPresent
-        @JsonFormat(pattern = "dd/MM/yyyy")
         LocalDate dataAtividade
 ) {
 }
