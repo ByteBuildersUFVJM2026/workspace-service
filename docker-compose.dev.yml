@@ -7,7 +7,7 @@ services:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - ./dados-do-banco:/var/lib/postgresql/data
     restart: unless-stopped
@@ -16,7 +16,7 @@ services:
     image: redis:7-alpine
     container_name: appbyteredis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     restart: unless-stopped
 
   nginx:
@@ -47,5 +47,4 @@ services:
 volumes:
   minio_arquivos:
     driver: local
-
 
