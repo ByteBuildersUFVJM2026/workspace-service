@@ -116,37 +116,58 @@ jobs:
             export DOCKER_CONFIG="$docker_config"
 
             printf '%s' '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin
+            grep -qE '^LETSENCRYPT_EMAIL=[^[:space:]<>]+@[^[:space:]<>]+\.[^[:space:]<>]+$' .env || {
+              echo 'LETSENCRYPT_EMAIL ausente ou inválido no .env da VPS'
+              exit 1
+            }
             docker compose -f docker-compose.prod.yml config --quiet
+            docker compose -f docker-compose.prod.yml pull nginx certbot
             docker pull "$image"
             docker tag "$image" ghcr.io/bytebuildersufvjm2026/workspace-service:latest
-            docker compose -f docker-compose.prod.yml up -d --force-recreate --pull never api nginx
+            docker compose -f docker-compose.prod.yml up -d --force-recreate --pull never api nginx certbot
 
-            attempt=1
-            while [ "$attempt" -le 30 ]; do
+            https_deadline=$(( $(date +%s) + 420 ))
+            while [ "$(date +%s)" -lt "$https_deadline" ]; do
               if docker logs liga-api 2>&1 | grep -q 'Started AcademicProjectApplication'; then
                 if [ "$(docker inspect -f '{{.State.Running}}' liga-api)" = 'true' ] &&
                    [ "$(docker inspect -f '{{.RestartCount}}' liga-api)" = '0' ] &&
                    [ "$(docker inspect -f '{{.State.Running}}' nginx-prod)" = 'true' ] &&
                    [ "$(docker inspect -f '{{.RestartCount}}' nginx-prod)" = '0' ] &&
-                   docker exec nginx-prod nginx -t; then
+                   [ "$(docker inspect -f '{{.State.Running}}' certbot-prod)" = 'true' ] &&
+                   [ "$(docker inspect -f '{{.RestartCount}}' certbot-prod)" = '0' ] &&
+                   docker exec nginx-prod test -f /etc/letsencrypt/live/api.webdev.computer/fullchain.pem &&
+                   docker exec nginx-prod sh -c "nginx -T 2>&1 | grep -q 'listen 443 ssl'" &&
+                   docker exec nginx-prod nginx -t &&
+                   curl --silent --show-error --output /dev/null \
+                     --connect-timeout 5 \
+                     --max-time 10 \
+                     --resolve api.webdev.computer:443:127.0.0.1 \
+                     https://api.webdev.computer/; then
                   docker compose -f docker-compose.prod.yml ps
                   exit 0
                 fi
-
-                docker compose -f docker-compose.prod.yml logs --tail=200 api nginx
-                exit 1
               fi
 
               if [ "$(docker inspect -f '{{.State.Running}}' liga-api)" != 'true' ] ||
-                 [ "$(docker inspect -f '{{.State.Running}}' nginx-prod)" != 'true' ]; then
-                docker compose -f docker-compose.prod.yml logs --tail=200 api nginx
+                 [ "$(docker inspect -f '{{.State.Running}}' nginx-prod)" != 'true' ] ||
+                 [ "$(docker inspect -f '{{.State.Running}}' certbot-prod)" != 'true' ]; then
+                docker compose -f docker-compose.prod.yml logs --tail=200 api nginx certbot
                 exit 1
               fi
 
               sleep 2
-              attempt=$((attempt + 1))
             done
 
-            docker compose -f docker-compose.prod.yml logs --tail=200 api nginx
-            echo 'A API e o Nginx não concluíram a inicialização em 60 segundos'
+            docker compose -f docker-compose.prod.yml logs --tail=200 api nginx certbot
+            echo 'A API e o HTTPS não concluíram a inicialização em 420 segundos'
             exit 1
+
+      - name: Validar HTTPS público
+        run: |
+          curl --silent --show-error --output /dev/null \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --retry 5 \
+            --retry-delay 5 \
+            --retry-connrefused \
+            https://api.webdev.computer/

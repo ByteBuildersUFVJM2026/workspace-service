@@ -50,6 +50,7 @@ Variaveis principais:
 | `MINIO_ACCESS_KEY` / `MINIO_SECRET_KEY` | Credenciais do MinIO |
 | `MINIO_BUCKET` | Bucket usado para documentos |
 | `CORS_ALLOWED_ORIGINS` | Origem permitida para o frontend |
+| `LETSENCRYPT_EMAIL` | E-mail usado pelo Certbot no ambiente de producao |
 
 ## Rodando somente a infraestrutura
 
