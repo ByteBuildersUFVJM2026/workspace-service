@@ -103,7 +103,11 @@ jobs:
           script: |
             set -eu
             cd ~/ByteBack/workspace-service
-            git fetch origin main
+
+            repository_url='https://github.com/${{ github.repository }}.git'
+            git_credentials="$(printf 'x-access-token:%s' '${{ secrets.GITHUB_TOKEN }}' | base64 | tr -d '\n')"
+            git -c http.extraHeader="AUTHORIZATION: basic $git_credentials" fetch "$repository_url" main
+            unset git_credentials
             git reset --hard '${{ github.sha }}'
 
             image='ghcr.io/bytebuildersufvjm2026/workspace-service:${{ github.sha }}'
