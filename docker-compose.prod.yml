@@ -69,7 +69,7 @@ services:
       - MINIO_BUCKET=${MINIO_BUCKET}
       - SPRING_PROFILES_ACTIVE=prod
       - JAVA_TOOL_OPTIONS=-Xms512m -Xmx1024m
-      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
+      - CORS_ALLOWED_ORIGINS=https://workspace-webb.bytebuilders.workers.dev
     depends_on:
       - db-liga
       - redis

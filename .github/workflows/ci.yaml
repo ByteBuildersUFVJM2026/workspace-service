@@ -5,7 +5,7 @@ run-name: CI Check - PR #${{ github.event.pull_request.number }} by @${{ github.
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   validacao-spring:

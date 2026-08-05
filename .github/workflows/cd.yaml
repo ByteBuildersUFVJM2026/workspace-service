@@ -6,44 +6,143 @@ on:
       - main
   workflow_dispatch:
 
-
 permissions:
   contents: read
-  packages: write
+
+concurrency:
+  group: production-pipeline-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  test:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Configurar o JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+
+      - name: Rodar testes e empacotar aplicação
+        run: ./mvnw clean verify
+
+  build:
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
       - name: Login no GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build e Push da imagem
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/bytebuildersufvjm2026/workspace-service:latest
+          tags: |
+            ghcr.io/bytebuildersufvjm2026/workspace-service:latest
+            ghcr.io/bytebuildersufvjm2026/workspace-service:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Validar configuração do servidor
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_FINGERPRINT: ${{ secrets.VPS_FINGERPRINT }}
+        run: |
+          test -n "$VPS_HOST" || { echo 'VPS_HOST não configurado'; exit 1; }
+          test -n "$VPS_USER" || { echo 'VPS_USER não configurado'; exit 1; }
+          test -n "$VPS_SSH_KEY" || { echo 'VPS_SSH_KEY não configurado'; exit 1; }
+          test -n "$VPS_PORT" || { echo 'VPS_PORT não configurado'; exit 1; }
+          test -n "$VPS_FINGERPRINT" || { echo 'VPS_FINGERPRINT não configurado'; exit 1; }
 
       - name: Deploy na VPS via SSH
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
+          fingerprint: ${{ secrets.VPS_FINGERPRINT }}
           script: |
-            cd ~/ByteBuilders
-            git fetch origin
-            git reset --hard origin/master
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker compose -f docker-compose.prod.yml pull api
-            docker compose -f docker-compose.prod.yml up -d --force-recreate api nginx
+            set -eu
+            cd ~/ByteBack/workspace-service
+            git fetch origin main
+            git reset --hard '${{ github.sha }}'
+
+            image='ghcr.io/bytebuildersufvjm2026/workspace-service:${{ github.sha }}'
+            docker_config="$(mktemp -d)"
+            trap 'rm -rf -- "$docker_config"' EXIT
+            export DOCKER_CONFIG="$docker_config"
+
+            printf '%s' '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin
+            docker compose -f docker-compose.prod.yml config --quiet
+            docker pull "$image"
+            docker tag "$image" ghcr.io/bytebuildersufvjm2026/workspace-service:latest
+            docker compose -f docker-compose.prod.yml up -d --force-recreate --pull never api nginx
+
+            attempt=1
+            while [ "$attempt" -le 30 ]; do
+              if docker logs liga-api 2>&1 | grep -q 'Started AcademicProjectApplication'; then
+                if [ "$(docker inspect -f '{{.State.Running}}' liga-api)" = 'true' ] &&
+                   [ "$(docker inspect -f '{{.RestartCount}}' liga-api)" = '0' ] &&
+                   [ "$(docker inspect -f '{{.State.Running}}' nginx-prod)" = 'true' ] &&
+                   [ "$(docker inspect -f '{{.RestartCount}}' nginx-prod)" = '0' ] &&
+                   docker exec nginx-prod nginx -t; then
+                  docker compose -f docker-compose.prod.yml ps
+                  exit 0
+                fi
+
+                docker compose -f docker-compose.prod.yml logs --tail=200 api nginx
+                exit 1
+              fi
+
+              if [ "$(docker inspect -f '{{.State.Running}}' liga-api)" != 'true' ] ||
+                 [ "$(docker inspect -f '{{.State.Running}}' nginx-prod)" != 'true' ]; then
+                docker compose -f docker-compose.prod.yml logs --tail=200 api nginx
+                exit 1
+              fi
+
+              sleep 2
+              attempt=$((attempt + 1))
+            done
+
+            docker compose -f docker-compose.prod.yml logs --tail=200 api nginx
+            echo 'A API e o Nginx não concluíram a inicialização em 60 segundos'
+            exit 1
