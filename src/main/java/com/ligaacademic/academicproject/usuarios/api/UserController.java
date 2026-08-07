@@ -46,14 +46,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @AuditarAcao(acao = "Membro promovido para cargo diretor")
-    @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/{email}/promote-to-director")
-    public ResponseEntity<Void> promoteToDirector(@PathVariable String email) {
-        userService.promoteToDirector(email);
-        return ResponseEntity.noContent().build();
-    }
-
     @AuditarAcao(acao = "Usuário foi deletado.")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{email}")

@@ -20,11 +20,10 @@ public interface UsersRepository extends JpaRepository<User, UUID> {
 
     boolean existsByEmail(String email);
 
-    boolean existsByEmailAndRole(String email, UsersRoles role);
-
     @Modifying
     @Query("UPDATE User u SET u.role = :role WHERE u.email = :email")
     void updateRoleByEmail(@Param("email") String email, @Param("role") UsersRoles role);
 
     void deleteByEmail(String email);
 }
+

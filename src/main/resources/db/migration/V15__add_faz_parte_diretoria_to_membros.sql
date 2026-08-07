@@ -1,2 +1,0 @@
-ALTER TABLE membros
-    ADD COLUMN faz_parte_diretoria BOOLEAN NOT NULL DEFAULT FALSE;

@@ -1,8 +1,6 @@
 package com.ligaacademic.academicproject.membros.infra;
 
 import com.ligaacademic.academicproject.membros.domain.Membro;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -31,8 +29,10 @@ public interface MembroRepository extends JpaRepository<Membro,Long> {
 
     boolean existsByMatricula(String matricula);
 
-    Page<Membro> findAllByFazParteDiretoriaTrue(Pageable pageable);
-
 }
+
+
+
+
 
 

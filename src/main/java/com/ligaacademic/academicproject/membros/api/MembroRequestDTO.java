@@ -11,8 +11,6 @@ public record MembroRequestDTO(
         @NotBlank
         String cargo,
 
-        boolean fazParteDiretoria,
-
         @Pattern(regexp = "^[0-9]{11}$", message = "A matricula precisa ter exatamente 11 digitos. EX: 20222016003")
         @NotBlank(message = "A matricula não pode ser vazio.")
          String matricula,
@@ -21,3 +19,4 @@ public record MembroRequestDTO(
         @NotBlank(message = "O email não pode ser vazio.")
          String email) {
 }
+
