@@ -16,11 +16,9 @@ public interface MembroMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "guildasModel", ignore = true)
     @Mapping(target = "totalHoras", ignore = true)
-    @Mapping(target = "fazParteDiretoria", source = "fazParteDiretoria")
     Membro paraEntidade(MembroRequestDTO dto);
 
     @Mapping(target = "guildas", source = "guildasModel", qualifiedByName = "guildaParaNomes")
-    @Mapping(target = "fazParteDiretoria", source = "fazParteDiretoria")
     MembroResponseDTO paraResponseDTO(Membro membro);
 
     @Named("guildaParaNomes")

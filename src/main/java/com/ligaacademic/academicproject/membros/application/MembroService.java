@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MembroService {
 
+
     private final MembroRepository membroRepository;
     private final GuildaLookupService guildaLookupService;
     private final MembroMapper membroMapper;
@@ -64,12 +65,6 @@ public class MembroService {
 
         membroExistente.setNome(dto.nome());
         membroExistente.setEmail(dto.email());
-        if (dto.cargo() != null) {
-            membroExistente.setCargo(dto.cargo());
-        }
-        if (dto.fazParteDiretoria() != null) {
-            membroExistente.setFazParteDiretoria(dto.fazParteDiretoria());
-        }
 
         Membro salvo = membroRepository.save(membroExistente);
         return membroMapper.paraResponseDTO(salvo);
@@ -89,12 +84,6 @@ public class MembroService {
     @Transactional(readOnly = true)
     public Page<MembroResponseDTO> listarTodos(Pageable pageable){
         return membroRepository.findAll(pageable)
-                .map(membroMapper::paraResponseDTO);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<MembroResponseDTO> listarDiretores(Pageable pageable) {
-        return membroRepository.findAllByFazParteDiretoriaTrue(pageable)
                 .map(membroMapper::paraResponseDTO);
     }
 
@@ -134,3 +123,6 @@ public class MembroService {
 
 
 }
+
+
+

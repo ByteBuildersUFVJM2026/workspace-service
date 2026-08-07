@@ -5,7 +5,6 @@ import com.ligaacademic.academicproject.membros.infra.MembroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.Function;
@@ -43,40 +42,6 @@ public class MembroLookupService {
 
         var membrosPorMatricula = membros.stream()
                 .collect(Collectors.toMap(Membro::getMatricula, Function.identity()));
-
-        return matriculasUnicas.stream()
-                .map(membrosPorMatricula::get)
-                .toList();
-    }
-
-    public List<Membro> buscarMembrosDiretoriaComLock(List<String> matriculas) {
-        if (matriculas == null || matriculas.isEmpty()) {
-            return List.of();
-        }
-
-        List<String> matriculasUnicas = new LinkedHashSet<>(matriculas).stream().toList();
-        List<Membro> membros = membroRepository.findAllByMatriculaInForUpdate(matriculasUnicas);
-        var membrosPorMatricula = membros.stream()
-                .collect(Collectors.toMap(Membro::getMatricula, Function.identity()));
-
-        List<String> matriculasInexistentes = matriculasUnicas.stream()
-                .filter(matricula -> !membrosPorMatricula.containsKey(matricula))
-                .toList();
-        List<String> matriculasForaDiretoria = matriculasUnicas.stream()
-                .filter(membrosPorMatricula::containsKey)
-                .filter(matricula -> !membrosPorMatricula.get(matricula).isFazParteDiretoria())
-                .toList();
-
-        if (!matriculasInexistentes.isEmpty() || !matriculasForaDiretoria.isEmpty()) {
-            List<String> mensagens = new ArrayList<>();
-            if (!matriculasInexistentes.isEmpty()) {
-                mensagens.add("As seguintes matrículas não existem: " + String.join(", ", matriculasInexistentes));
-            }
-            if (!matriculasForaDiretoria.isEmpty()) {
-                mensagens.add("Os seguintes membros não pertencem à diretoria: " + String.join(", ", matriculasForaDiretoria));
-            }
-            throw new IllegalArgumentException(String.join("; ", mensagens));
-        }
 
         return matriculasUnicas.stream()
                 .map(membrosPorMatricula::get)

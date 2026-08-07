@@ -32,7 +32,7 @@ public class RegistroAtividadesService {
 
     @Transactional
     public RegistroAtividadesResponseDTO registrarHoras(RegistroAtividadesRequestDTO dto) {
-        List<Membro> membros = membroLookupService.buscarMembrosDiretoriaComLock(dto.matriculas());
+        List<Membro> membros = membroLookupService.buscarMembrosComLock(dto.matriculas());
 
         RegistroAtividades entidade = registroAtividadesMapper.horasParaEntidade(dto);
         membros.forEach(membro -> membro.setTotalHoras(membro.getTotalHoras().add(entidade.getHoras())));
@@ -92,10 +92,10 @@ public class RegistroAtividadesService {
                 .map(Membro::getMatricula)
                 .toList());
 
-        List<Membro> novosParticipantes = membroLookupService.buscarMembrosDiretoriaComLock(dto.matriculas());
-
         participantesAtuais.forEach(membro ->
                 membro.setTotalHoras(membro.getTotalHoras().subtract(registro.getHoras())));
+
+        List<Membro> novosParticipantes = membroLookupService.buscarMembrosComLock(dto.matriculas());
 
         novosParticipantes.forEach(membro ->
                 membro.setTotalHoras(membro.getTotalHoras().add(dto.horas())));
