@@ -8,8 +8,8 @@ public record MembroResponseDTO(
         String matricula,
         String cargo,
         String email,
+        boolean fazParteDiretoria,
         BigDecimal totalHoras,
         List<String> guildas
 ) {
 }
-

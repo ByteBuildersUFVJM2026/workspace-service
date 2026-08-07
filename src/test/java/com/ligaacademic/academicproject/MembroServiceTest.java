@@ -42,13 +42,14 @@ public class MembroServiceTest {
 
         @Test
         void deveSalvarMembroQuandoMatriculaNaoExiste() {
-            MembroRequestDTO dto = new MembroRequestDTO("Arthur", "Membro", "12345678901", "arthur@email.com");
+            MembroRequestDTO dto = new MembroRequestDTO("Arthur", "Membro", false, "12345678901", "arthur@email.com");
 
             Membro entidade = new Membro();
             entidade.setMatricula("12345678901");
             entidade.setNome("Arthur");
 
-            MembroResponseDTO responseEsperado = new MembroResponseDTO("Arthur", "12345678901", "Membro", "arthur@email.com", BigDecimal.ZERO, List.of());
+            MembroResponseDTO responseEsperado = new MembroResponseDTO(
+                    "Arthur", "12345678901", "Membro", "arthur@email.com", false, BigDecimal.ZERO, List.of());
 
             when(membroRepository.existsByMatricula("12345678901")).thenReturn(false);
             when(membroMapper.paraEntidade(dto)).thenReturn(entidade);
@@ -63,7 +64,7 @@ public class MembroServiceTest {
 
         @Test
         void deveLancarConflictExceptionQuandoMatriculaJaExiste() {
-            MembroRequestDTO dto = new MembroRequestDTO("Arthur", "Membro", "12345678901", "arthur@email.com");
+            MembroRequestDTO dto = new MembroRequestDTO("Arthur", "Membro", false, "12345678901", "arthur@email.com");
 
             when(membroRepository.existsByMatricula("12345678901")).thenReturn(true);
 

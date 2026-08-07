@@ -53,6 +53,19 @@ public class UserService {
         usersRepository.updateRoleByEmail(email, UsersRoles.ROLE_ADMIN);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @AuditarAcao(acao = "Promoveu alguém para diretor")
+    @Transactional
+    public void promoteToDirector(String email) {
+        if (!usersRepository.existsByEmail(email)) {
+            throw new EntityNotFoundException("Usuário não encontrado.");
+        }
+        if (usersRepository.existsByEmailAndRole(email, UsersRoles.ROLE_ADMIN)) {
+            throw new ConflictException("Um usuário administrador não pode ser rebaixado para diretor.");
+        }
+        usersRepository.updateRoleByEmail(email, UsersRoles.ROLE_DIRETOR);
+    }
+
 
     @Transactional
     public void deleteUser(String email) {

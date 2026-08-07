@@ -19,6 +19,9 @@ public class Membro {
 
     private String cargo;
 
+    @Column(name = "faz_parte_diretoria", nullable = false)
+    private boolean fazParteDiretoria;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalHoras = BigDecimal.ZERO;
 
@@ -54,6 +57,14 @@ public class Membro {
         this.cargo = cargo;
     }
 
+    public boolean isFazParteDiretoria() {
+        return fazParteDiretoria;
+    }
+
+    public void setFazParteDiretoria(boolean fazParteDiretoria) {
+        this.fazParteDiretoria = fazParteDiretoria;
+    }
+
     public String getMatricula() {
         return matricula;
     }
@@ -83,6 +94,7 @@ public class Membro {
         return "Membro{" +
                 "nome='" + nome + '\'' +
                 ", cargo='" + cargo + '\'' +
+                ", fazParteDiretoria=" + fazParteDiretoria +
                 ", matricula='" + matricula + '\'' +
                 ", id=" + id +
                 ", email='" + email + '\'' +
@@ -107,4 +119,3 @@ public class Membro {
     }
 
 }
-

@@ -2,6 +2,7 @@ package com.ligaacademic.academicproject.membros.api;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public record MembroUpdateRequestDTO(
 
@@ -10,6 +11,11 @@ public record MembroUpdateRequestDTO(
 
         @Email(message = "Adicione um email válido.")
         @NotBlank(message = "O email não pode ser vazio.")
-        String email
+        String email,
+
+        @Pattern(regexp = ".*\\S.*", message = "O cargo não pode ser vazio.")
+        String cargo,
+
+        Boolean fazParteDiretoria
 ) {
 }
