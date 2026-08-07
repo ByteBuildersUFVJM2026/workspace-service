@@ -4,10 +4,14 @@ import com.ligaacademic.academicproject.usuarios.api.CreateUserRequestDTO;
 import com.ligaacademic.academicproject.usuarios.api.CreateUserResponseDTO;
 import com.ligaacademic.academicproject.shared.exceptions.ConflictException;
 import com.ligaacademic.academicproject.shared.auditoria.AuditarAcao;
+import com.ligaacademic.academicproject.usuarios.api.UserProfileResponseDTO;
 import com.ligaacademic.academicproject.usuarios.domain.User;
 import com.ligaacademic.academicproject.usuarios.domain.UsersRoles;
+import com.ligaacademic.academicproject.usuarios.infra.UserMapper;
 import com.ligaacademic.academicproject.usuarios.infra.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,10 +22,12 @@ public class UserService {
 
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
 
@@ -54,5 +60,11 @@ public class UserService {
             throw new EntityNotFoundException("Usuário para remover não encontrado");
         }
         usersRepository.deleteByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserProfileResponseDTO> listarTodos(Pageable pageable) {
+        return usersRepository.findAll(pageable)
+                .map(userMapper::paraResponseDTO);
     }
 }

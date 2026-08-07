@@ -1,15 +1,27 @@
-name: Continuous Integration
+name: CI
 
-run-name: CI Check - PR #${{ github.event.pull_request.number }} by @${{ github.actor }}
+run-name: CI - ${{ github.event.pull_request.number && format('PR #{0}', github.event.pull_request.number) || github.ref_name }} by @${{ github.actor }}
 
 on:
   pull_request:
     branches:
       - main
+  merge_group:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validacao-spring:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
       - name: Baixar o código do repositório
         uses: actions/checkout@v4
@@ -18,7 +30,28 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'
+          distribution: temurin
+          cache: maven
 
       - name: Rodar testes e empacotar aplicação
         run: ./mvnw clean verify
+
+      - name: Validar scripts de produção
+        run: sh -n certbot-entrypoint.sh nginx-entrypoint.sh
+
+      - name: Validar Docker Compose de produção
+        run: |
+          cp .env.example .env
+          docker compose -f docker-compose.prod.yml config --quiet
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Validar build da imagem de produção
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

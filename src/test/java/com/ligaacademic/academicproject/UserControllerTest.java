@@ -2,6 +2,7 @@ package com.ligaacademic.academicproject;
 
 import com.ligaacademic.academicproject.usuarios.api.CreateUserRequestDTO;
 import com.ligaacademic.academicproject.usuarios.api.CreateUserResponseDTO;
+import com.ligaacademic.academicproject.usuarios.api.UserProfileResponseDTO;
 import com.ligaacademic.academicproject.shared.security.SecurityConfigurations;
 import com.ligaacademic.academicproject.shared.security.TokenService;
 import com.ligaacademic.academicproject.shared.security.ratelimity.LoginRateLimitFilter;
@@ -21,10 +22,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -64,6 +68,33 @@ class UserControllerTest {
             chain.doFilter(req, res);
             return null;
         }).when(loginRateLimitFilter).doFilter(any(), any(), any());
+    }
+
+    @Nested
+    class listarUsuarios {
+
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        void deveRetornarPaginaDeUsuariosParaAdmin() throws Exception {
+            var response = new UserProfileResponseDTO(
+                    "usuario@gmail.com", UsersRoles.ROLE_USER, LocalDateTime.of(2026, 8, 6, 10, 0)
+            );
+            when(userService.listarTodos(any())).thenReturn(new PageImpl<>(List.of(response)));
+
+            mockMvc.perform(get("/admin/users"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.content[0].email").value("usuario@gmail.com"))
+                    .andExpect(jsonPath("$.content[0].role").value("ROLE_USER"))
+                    .andExpect(jsonPath("$.content[0].createdAt").value("2026-08-06T10:00:00"))
+                    .andExpect(jsonPath("$.content[0].password").doesNotExist());
+        }
+
+        @Test
+        @WithMockUser(roles = "USER")
+        void deveRetornar403QuandoNaoForAdmin() throws Exception {
+            mockMvc.perform(get("/admin/users"))
+                    .andExpect(status().isForbidden());
+        }
     }
 
     @Nested
