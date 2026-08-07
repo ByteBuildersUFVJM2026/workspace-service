@@ -4,6 +4,7 @@ import com.ligaacademic.academicproject.membros.api.MembroRequestDTO;
 import com.ligaacademic.academicproject.membros.api.MembroResponseDTO;
 import com.ligaacademic.academicproject.membros.api.MembroUpdateRequestDTO;
 import com.ligaacademic.academicproject.shared.auditoria.AuditarAcao;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,13 @@ public class MembroController {
     public ResponseEntity<Page<MembroResponseDTO>> listarTodos(@PageableDefault(size = 20, sort = "nome") Pageable pageable) {
 
         return ResponseEntity.ok(membroService.listarTodos(pageable));
+    }
+
+    @GetMapping("/diretores")
+    public ResponseEntity<Page<MembroResponseDTO>> listarDiretores(
+            @ParameterObject @PageableDefault(size = 20, sort = "nome") Pageable pageable) {
+
+        return ResponseEntity.ok(membroService.listarDiretores(pageable));
     }
 
 
@@ -89,4 +97,3 @@ public class MembroController {
         return ResponseEntity.noContent().build();
     }
 }
-
